@@ -4,3 +4,4 @@
 [submodule "contiki"]
 	path = contiki
 	url = git@github.com:espv/contiki.git
+	branch = master
