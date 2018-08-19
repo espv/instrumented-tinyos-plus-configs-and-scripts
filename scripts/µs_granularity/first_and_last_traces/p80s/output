@@ -1,0 +1,163 @@
+Not including delimiter 2
+File: p10000µs_80UDP.txt
+Number forwarded: 220 first_time: 43870089 - last_time: 50174289
+Forwarded on avg every 28655
+Number received: 379 - on avg every 16633 
+
+Not including delimiter 2
+File: p1000µs_80UDP.txt
+Number forwarded: 247 first_time: 10907018 - last_time: 16033969
+Forwarded on avg every 20756
+Number received: 352 - on avg every 14565 
+
+Not including delimiter 2
+File: p13500µs_80UDP.txt
+Number forwarded: 156 first_time: 50740759 - last_time: 54656081
+Forwarded on avg every 25098
+Number received: 443 - on avg every 8838 
+
+Not including delimiter 2
+File: p14000µs_80UDP.txt
+Number forwarded: 299 first_time: 10424303 - last_time: 15181596
+Forwarded on avg every 15910
+Number received: 300 - on avg every 15857 
+
+Not including delimiter 2
+File: p14500µs_80UDP_R.txt
+Number forwarded: 150 first_time: 45282867 - last_time: 52877396
+Forwarded on avg every 50630
+Number received: 449 - on avg every 16914 
+
+Not including delimiter 2
+File: p15000µs_80UDP.txt
+Number forwarded: 152 first_time: 11528262 - last_time: 20054909
+Forwarded on avg every 56096
+Number received: 447 - on avg every 19075 
+
+Not including delimiter 2
+File: p15500µs_80UDP.txt
+Number forwarded: 151 first_time: 20908269 - last_time: 28804702
+Forwarded on avg every 52294
+Number received: 448 - on avg every 17625 
+
+Not including delimiter 2
+File: p16000µs_80UDP.txt
+Number forwarded: 151 first_time: 53787775 - last_time: 61789552
+Forwarded on avg every 52991
+Number received: 448 - on avg every 17861 
+
+Not including delimiter 2
+File: p16500µs_80UDP.txt
+Number forwarded: 185 first_time: 47133329 - last_time: 56733297
+Forwarded on avg every 51891
+Number received: 414 - on avg every 23188 
+
+Not including delimiter 2
+File: p17000µs_80UDP.txt
+Number forwarded: 156 first_time: 47440184 - last_time: 55536140
+Forwarded on avg every 51897
+Number received: 443 - on avg every 18275 
+
+Not including delimiter 2
+File: p17500µs_80UDP_R.txt
+Number forwarded: 151 first_time: 37992504 - last_time: 46120345
+Forwarded on avg every 53826
+Number received: 448 - on avg every 18142 
+
+Not including delimiter 2
+File: p18000µs_80UDP_R.txt
+Number forwarded: 95 first_time: 10888051 - last_time: 20029910
+Forwarded on avg every 96230
+Number received: 504 - on avg every 18138 
+
+Not including delimiter 2
+File: p18500µs_80UDP.txt
+Number forwarded: 294 first_time: 13701132 - last_time: 24996624
+Forwarded on avg every 38420
+Number received: 305 - on avg every 37034 
+
+Not including delimiter 2
+File: p19000µs_80UDP.txt
+Number forwarded: 293 first_time: 9650520 - last_time: 21269790
+Forwarded on avg every 39656
+Number received: 306 - on avg every 37971 
+
+Not including delimiter 2
+File: p19500µs_80UDP.txt
+Number forwarded: 292 first_time: 9301559 - last_time: 21162271
+Forwarded on avg every 40618
+Number received: 307 - on avg every 38634 
+
+Not including delimiter 2
+File: p1µs_80UDP_R.txt
+Number forwarded: 175 first_time: 24479453 - last_time: 28576747
+Forwarded on avg every 23413
+Number received: 424 - on avg every 9663 
+
+Not including delimiter 2
+File: p20000µs_80UDP.txt
+Number forwarded: 285 first_time: 9043700 - last_time: 21358111
+Forwarded on avg every 43208
+Number received: 314 - on avg every 39217 
+
+Not including delimiter 2
+File: p20500µs_80UDP.txt
+Number forwarded: 296 first_time: 10452106 - last_time: 22942213
+Forwarded on avg every 42196
+Number received: 303 - on avg every 41221 
+
+Not including delimiter 2
+File: p21000µs_80UDP.txt
+Number forwarded: 287 first_time: 49545616 - last_time: 62323066
+Forwarded on avg every 44520
+Number received: 312 - on avg every 40953 
+
+Not including delimiter 2
+File: p21500µs_80UDP.txt
+Number forwarded: 288 first_time: 48871323 - last_time: 61937881
+Forwarded on avg every 45369
+Number received: 311 - on avg every 42014 
+
+Not including delimiter 2
+File: p22000µs_80UDP.txt
+Number forwarded: 293 first_time: 10469273 - last_time: 23856424
+Forwarded on avg every 45689
+Number received: 306 - on avg every 43748 
+
+Not including delimiter 2
+File: p22500µs_80UDP.txt
+Number forwarded: 289 first_time: 17307063 - last_time: 26375758
+Forwarded on avg every 31379
+Number received: 310 - on avg every 29253 
+
+Not including delimiter 2
+File: p23000µs_80UDP.txt
+Number forwarded: 296 first_time: 10069288 - last_time: 17166510
+Forwarded on avg every 23977
+Number received: 303 - on avg every 23423 
+
+Not including delimiter 2
+File: p3000µs_80UDP.txt
+Number forwarded: 287 first_time: 8036464 - last_time: 13797952
+Forwarded on avg every 20074
+Number received: 312 - on avg every 18466 
+
+Not including delimiter 2
+File: p5000µs_80UDP.txt
+Number forwarded: 202 first_time: 8403008 - last_time: 14818794
+Forwarded on avg every 31761
+Number received: 397 - on avg every 16160 
+
+Not including delimiter 2
+File: p8000µs_0UDP.txt
+Number forwarded: 81 first_time: 9839444 - last_time: 12137711
+Forwarded on avg every 28373
+Number received: 518 - on avg every 4436 
+
+Not including delimiter 2
+File: p8000µs_80UDP.txt
+Number forwarded: 149 first_time: 12670399 - last_time: 20661933
+Forwarded on avg every 53634
+Number received: 450 - on avg every 17758 
+
+

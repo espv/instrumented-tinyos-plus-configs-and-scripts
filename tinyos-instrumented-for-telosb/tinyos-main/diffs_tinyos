@@ -1,0 +1,2604 @@
+Only in /home/espen/tinyos-main/apps: ForwardingApp
+diff -r ./apps/tests/rfxlink/TestTimeStamping/TestTimeStampingC.nc /home/espen/tinyos-main/apps/tests/rfxlink/TestTimeStamping/TestTimeStampingC.nc
+54,55d53
+< 
+< 	//components EventFrameworkC;
+diff -r ./apps/tests/storage/Block/Makefile /home/espen/tinyos-main/apps/tests/storage/Block/Makefile
+3,5c3
+< PFLAGS += -DNEW_PRINTF_SEMANTICS -DPRINTFUART_ENABLED
+< GOALS += blip
+< include $(TINYOS_ROOT_DIR)/Makefile.include
+\ No newline at end of file
+---
+> include $(TINYOS_ROOT_DIR)/Makefile.include
+diff -r ./apps/tests/storage/Block/RandRWAppC.nc /home/espen/tinyos-main/apps/tests/storage/Block/RandRWAppC.nc
+31,36d30
+< 
+<   components SerialPrintfC;
+<   components EventFrameworkC;
+<   components SchedulerBasicP;
+<   RandRWC.EventFramework -> EventFrameworkC;
+<   SchedulerBasicP.EventFramework -> EventFrameworkC;
+diff -r ./apps/tests/storage/Block/RandRWC.nc /home/espen/tinyos-main/apps/tests/storage/Block/RandRWC.nc
+24d23
+<     interface EventFramework;
+92d90
+<     printf("r == SUCCESS: %d\n", r == SUCCESS);
+Only in ./apps/UDPEcho: apt_packets
+Only in ./apps/UDPEcho: build
+Only in ./apps/UDPEcho: EventFrameworkC.nc
+Only in ./apps/UDPEcho: eventframework.h
+Only in ./apps/UDPEcho: EventFrameworkP.nc
+Only in ./apps/UDPEcho: installed_packages.new
+diff -r ./apps/UDPEcho/Makefile /home/espen/tinyos-main/apps/UDPEcho/Makefile
+52c52
+< #PFLAGS += -DRPL_ROUTING=0
+---
+> PFLAGS += -DRPL_ROUTING=1
+56c56
+< #PFLAGS += -DRPL_STORING_MODE=0
+---
+> PFLAGS += -DRPL_STORING_MODE=1
+59,60c59,60
+< #PFLAGS += -DRPL_OF_0=0
+< #PFLAGS += -DRPL_OF_MRHOF=0
+---
+> PFLAGS += -DRPL_OF_0=1
+> PFLAGS += -DRPL_OF_MRHOF=0
+66,70c66,69
+< # Disable these settings
+< #PFLAGS += -DLOW_POWER_LISTENING
+< #PFLAGS += -DLPL_SLEEP_INTERVAL=512
+< #PFLAGS += -DLPL_DEF_LOCAL_WAKEUP=512
+< #PFLAGS += -DLPL_DEF_REMOTE_WAKEUP=512
+---
+> PFLAGS += -DLOW_POWER_LISTENING
+> PFLAGS += -DLPL_SLEEP_INTERVAL=512
+> PFLAGS += -DLPL_DEF_LOCAL_WAKEUP=512
+> PFLAGS += -DLPL_DEF_REMOTE_WAKEUP=512
+85c84
+< PFLAGS += -DREPORT_DEST=\"fe80::3\"
+---
+> # PFLAGS += -DREPORT_DEST=\"fec0::100\"
+87,90c86
+< # To enable hardware acks instead of software. Added by Espen.
+< #PFLAGS+=-DCC2420_HW_ACKNOWLEDGEMENTS
+< 
+< GOALS += blip
+---
+> GOALS += blip rpl
+diff -r ./apps/UDPEcho/UDPEchoC.nc /home/espen/tinyos-main/apps/UDPEcho/UDPEchoC.nc
+57,63d56
+<   components CounterMicro32C;
+<   UDPEchoP.AccurateTimer -> CounterMicro32C;
+< 
+<   components new BusyWaitCounterC(TMicro, uint32_t);
+< 	BusyWaitCounterC.Counter -> CounterMicro32C;
+<   UDPEchoP.BusyWait -> BusyWaitCounterC;
+< 
+107,135d99
+<   components IPForwardingEngineP;
+<   components CC2420TransmitP;
+<   components CC2420ReceiveP;
+<   components IPProtocolsP;
+<   components IPDispatchP;
+<   components SchedulerBasicP;
+<   components IPNeighborDiscoveryP;
+<   components CC2420TinyosNetworkP;
+<   components UniqueSendP;
+<   components UniqueReceiveP;
+<   components PacketLinkP;
+<   components CC2420CsmaP;
+<   components EventFrameworkC;
+< 
+<   IPForwardingEngineP.EventFramework -> EventFrameworkC;
+<   CC2420TransmitP.EventFramework -> EventFrameworkC;
+<   CC2420ReceiveP.EventFramework -> EventFrameworkC;
+<   IPProtocolsP.EventFramework -> EventFrameworkC;
+<   IPDispatchP.EventFramework -> EventFrameworkC;
+<   SchedulerBasicP.EventFramework -> EventFrameworkC;
+<   IPNeighborDiscoveryP.EventFramework -> EventFrameworkC;
+<   CC2420TinyosNetworkP.EventFramework -> EventFrameworkC;
+<   UniqueReceiveP.EventFramework -> EventFrameworkC;
+<   UniqueSendP.EventFramework -> EventFrameworkC;
+<   UDPEchoP.EventFramework -> EventFrameworkC;
+<   PacketLinkP.EventFramework -> EventFrameworkC;
+<   CC2420CsmaP.EventFramework -> EventFrameworkC;
+< 
+<   UDPEchoP.ForwardingTable -> IPForwardingEngineP;
+diff -r ./apps/UDPEcho/UDPEchoP.nc /home/espen/tinyos-main/apps/UDPEcho/UDPEchoP.nc
+41,44d40
+< #include "../../tools/tinyos/c/blip/lib6lowpan/iovec.h"
+< #include "../../tools/tinyos/c/blip/lib6lowpan/iovec.c"
+< 
+< //#include "eventframework.h"
+47,56d42
+< // Turn off hardware acks. This actually causes a bunch of errors, similar to disabling acks.
+< // The reason seems to be how blip works. It requires hardware acks to work reliably.
+< // Source: google "bursts of duplicate packets" to visit a thread about blip
+< // With hardware acks, we can expect 0 acknowledgements.
+< // Alternatively, we can try to get software acks to work with blip.
+< #undef CC2420_HW_ACKNOWLEDGEMENTS
+< #define CC2420_NO_ACKNOWLEDGEMENTS
+< 
+< // Set to 1 by radio driver. Used by mote 1.
+< bool udpechopsent = 1;
+74,81d59
+< 
+<     interface ForwardingTable;
+< 
+<     interface EventFramework;
+< 
+<     interface Counter<TMicro, uint32_t> as AccurateTimer;
+< 
+<     interface BusyWait<TMicro, uint32_t> as BusyWait;
+89,109d66
+<   
+<   bool timerToggle = 0;
+< 
+<   int printf_ieee154addr(ieee154_addr_t *in) {
+<     int i;
+<     switch (in->ieee_mode) {
+<     case IEEE154_ADDR_SHORT:
+<       printf("IEEE154_ADDR_SHORT: 0x%x", in->i_saddr);
+<       break;
+<     case IEEE154_ADDR_EXT:
+<       printf("IEEE154_ADDR_EXT: ");
+< 
+<       for (i = 7; i >= 0; i--) {
+<         printf("%02x", in->i_laddr.data[i]);
+<         if (i > 0)
+<           printf(":");
+<       }
+<       break;
+<     }
+<     return 0;
+<   }
+112,113d68
+<     struct in6_addr next_hop;
+<     uint8_t prefix[8];
+115c70
+<     timerStarted = 0;
+---
+>     timerStarted = FALSE;
+119,136d73
+<     // Espen
+<     //printf("Tos node Id: %d\n", TOS_NODE_ID);
+<     if (TOS_NODE_ID == 3) {
+<       //printf("I am not node 1, and will not send packets\n");
+<       goto after;
+<     } else if (TOS_NODE_ID == 2) {
+<       memset(&next_hop, 0, sizeof(struct in6_addr));
+<       next_hop.s6_addr[0] = 0xfe;
+<       next_hop.s6_addr[1] = 0x80;
+<       next_hop.s6_addr[15] = 3;
+<       call ForwardingTable.addRoute(NULL, 0, &next_hop, 1);
+<       //printf("HIRQ start - I am node 2 and will add fe80::3 to my routing table\n");
+<       //call EventFramework.post_event(1, "HIRQ App start", "UDPEchoP.Boot.booted", "");
+<       timerToggle = 1;
+<       //call StatusTimer.startOneShot(800);
+<       goto after;
+<     }
+< 
+140c77
+<     call StatusTimer.startOneShot(0);
+---
+>     call StatusTimer.startOneShot(call Random.rand16() % (1024 * REPORT_PERIOD));
+143d79
+< after:
+147d82
+<   }
+149c84
+<   async event void AccurateTimer.overflow() {}
+---
+>   }
+168,174d102
+<     //printf("Echo recv [%i]: ", len);
+<     //for (i = 0; i < len; i++) {
+<     //  printf("%02x ", cur[i]);
+<     //}
+<     //printf("\n");
+< #endif
+<     //call Echo.sendto(from, data, len);
+175a104,110
+>     printf("Echo recv [%i]: ", len);
+>     for (i = 0; i < len; i++) {
+>       printf("%02x ", cur[i]);
+>     }
+>     printf("\n");
+> #endif
+>     call Echo.sendto(from, data, len);
+178,186c113,117
+<   uint32_t microsecond_packet_interval = 50500; // 7 is the lowest that yields results
+<   uint32_t last_time_sent = 0;
+< 
+<   void printTraces() {
+<     call EventFramework.print_events();
+<   }
+< 
+<   void sendPacket() {
+<     call Leds.led0Toggle();
+---
+>   event void StatusTimer.fired() {
+>     if (!timerStarted) {
+>       call StatusTimer.startPeriodic(1024 * REPORT_PERIOD);
+>       timerStarted = TRUE;
+>     }
+194,224c125,126
+<     call Status.sendto(&route_dest, &stats, 0); // SPI 54 calls between 9-10 for rxdone and packet size 36. 15 calls for packet size 116. 2 bytes are read for each rxDone.
+<   }
+< 
+< 
+<   task void sendPeriodicPacket() {
+<     uint32_t cur_time;
+<     if (!udpechopsent && (cur_time-last_time_sent) < microsecond_packet_interval*10) {
+<       post sendPeriodicPacket();
+<       return;
+<     }
+<     udpechopsent = 0;
+<     cur_time = call AccurateTimer.get();
+<     printf("Before BusyWait\n");
+<     call BusyWait.wait(microsecond_packet_interval - (cur_time-last_time_sent));
+<     printf("sendPeriodicPacket, %lu - (%lu-%lu) = %lu \n", microsecond_packet_interval, cur_time, last_time_sent, microsecond_packet_interval - (cur_time-last_time_sent));
+<     sendPacket();
+<     last_time_sent = call AccurateTimer.get();
+<     post sendPeriodicPacket();
+<   }
+< 
+<   event void StatusTimer.fired() {
+<     if (!timerStarted && microsecond_packet_interval % 1000 == 0) {  // If the timer requires finer precision than millisecond, we don't use the timer, but a busy wait loop instead.
+<       call StatusTimer.startPeriodic(microsecond_packet_interval/1000);  // StatusTimer is a millisecond clock.
+<       timerStarted = 1;
+<     }
+<     sendPacket();
+< 
+<     if (microsecond_packet_interval % 1000 != 0) {
+<       last_time_sent = call AccurateTimer.get();
+<       post sendPeriodicPacket();
+<     }
+---
+>     call Leds.led1Toggle();
+>     call Status.sendto(&route_dest, &stats, sizeof(stats));
+Only in .: diffs_tinyos
+Only in /home/espen/tinyos-main/doc: .gitignore
+Only in /home/espen/tinyos-main/: .git
+Only in /home/espen/tinyos-main/: .gitignore
+Only in /home/espen/tinyos-main/packaging: .gitignore
+Only in /home/espen/tinyos-main/tools: aclocal.m4
+Only in /home/espen/tinyos-main/tools: autom4te.cache
+Only in /home/espen/tinyos-main/tools: config-aux
+Only in /home/espen/tinyos-main/tools: config.h
+Only in /home/espen/tinyos-main/tools: config.h.in
+Only in /home/espen/tinyos-main/tools: config.log
+Only in /home/espen/tinyos-main/tools: config.status
+Only in /home/espen/tinyos-main/tools: configure
+Only in /home/espen/tinyos-main/tools: .gitignore
+Only in /home/espen/tinyos-main/tools: Makefile
+Only in /home/espen/tinyos-main/tools: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/intelmote2: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/intelmote2: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/intelmote2/openocd: imote2-ocd-program.py
+Only in /home/espen/tinyos-main/tools/platforms/intelmote2/openocd: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/intelmote2/openocd: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms: Makefile
+Only in /home/espen/tinyos-main/tools/platforms: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/mica/cc1000-channelgen: .deps
+Only in /home/espen/tinyos-main/tools/platforms/mica/cc1000-channelgen: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/mica/cc1000-channelgen: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/mica/cc1000-channelgen: tos-channelgen
+Only in /home/espen/tinyos-main/tools/platforms/mica/cc1000-channelgen: tos-channelgen.o
+Only in /home/espen/tinyos-main/tools/platforms/mica: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/mica: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/msp430/cppbsl: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/msp430/cppbsl: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/msp430/cppbsl/src: .deps
+Only in /home/espen/tinyos-main/tools/platforms/msp430/cppbsl/src: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/msp430/cppbsl/src: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/msp430: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/msp430: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/msp430/motelist: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/msp430/motelist: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/msp430/motelist: motelist
+Only in /home/espen/tinyos-main/tools/platforms/msp430/motelist: motelist-linux
+Only in /home/espen/tinyos-main/tools/platforms/msp430/motelist: motelist-macos
+Only in /home/espen/tinyos-main/tools/platforms/msp430/pybsl: elf.py
+Only in /home/espen/tinyos-main/tools/platforms/msp430/pybsl: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/msp430/pybsl: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/msp430/pybsl/serial: __init__.py
+Only in /home/espen/tinyos-main/tools/platforms/msp430/pybsl/serial: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/msp430/pybsl/serial: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/msp430/pybsl/serial: serialposix.py
+Only in /home/espen/tinyos-main/tools/platforms/msp430/pybsl: tos-bsl
+Only in /home/espen/tinyos-main/tools/platforms/msp430/pybsl: tos-bsl.1
+Only in /home/espen/tinyos-main/tools/platforms/sam3: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/sam3: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/sam3: samba-program.py
+Only in /home/espen/tinyos-main/tools/platforms/ucmote: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/ucmote: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/mcp2200gpio: .deps
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/mcp2200gpio: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/mcp2200gpio: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/mcp2200gpio: mcp2200gpio
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/motelist2: Makefile
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/motelist2: Makefile.in
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/motelist2: motelist2
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/motelist2: tosdevicesearch-cygwin.py
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/motelist2: tosdevicesearch-linux.py
+Only in /home/espen/tinyos-main/tools/platforms/ucmote/motelist2: tosdevicesearch.py
+Only in /home/espen/tinyos-main/tools: stamp-h1
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: .deps
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: ieee154_header.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: in_cksum.o
+diff -r ./tools/tinyos/c/blip/lib6lowpan/iovec.c /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/iovec.c
+14,15d13
+<   // Called 3 times: first len = 2, second len = 8, third len = number of bytes UDP payload.
+<   // Because of that, the packet processing time in the IP layer depends partly on the third call of this function.
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: iovec.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: ip_malloc.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: lib6lowpan_4944.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: lib6lowpan.a
+diff -r ./tools/tinyos/c/blip/lib6lowpan/lib6lowpan.c /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/lib6lowpan.c
+1056d1055
+<   call EventFramework.trace_event(110);  // *len = number of bytes in UDP payload. Happens in third call to iov_read too.
+1058d1056
+<   call EventFramework.trace_event(111);
+diff -r ./tools/tinyos/c/blip/lib6lowpan/lib6lowpan_frag.c /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/lib6lowpan_frag.c
+207d206
+<     call EventFramework.trace_event(100); // iov_read here calls memcpy with number of bytes in UDP payload.
+211d209
+<     call EventFramework.trace_event(101);
+241d238
+< 
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: lib6lowpan_frag.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: lib6lowpan.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: context.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_bit_range_zero_p
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_inet_ntop6
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_inet_ntop6.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_iovec
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_iovec.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_ipnh_real_length
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_ipnh_real_length.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_lowpan_frag_get
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_lowpan_frag_get.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_pack_address
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_pack_multicast
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_pack_nhc_chain
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_pack_tcfl
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_unpack_address
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_unpack_ipnh
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_unpack_multicast
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_unpack_tcfl
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/tests: test_unpack_udp
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/trace: compress
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/trace: compress.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/trace: decompress
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/trace: decompress.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/trace: .deps
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/trace: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan/trace: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/lib6lowpan: utility.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip/linux: tun_dev.c
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c/blip: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: async.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: autom4te.cache
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: block.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: coap_debug.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: coap_list.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: config.h
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: config.h.in
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: config.log
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: config.status
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: configure
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/doc: doxygen.out
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/doc: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: encode.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/examples: client.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/examples: coap-client
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/examples: coap-server
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/examples: etsi_iot_01
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/examples: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/examples: rd
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/examples: server.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: hashkey.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: libcoap.a
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: net.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: option.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: pdu.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: resource.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: str.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: subscribe.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap/tests: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c/coap: uri.o
+Only in /home/espen/tinyos-main/tools/tinyos/c: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/c/serial_tun: .deps
+Only in /home/espen/tinyos-main/tools/tinyos/c/serial_tun: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c/serial_tun: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/c/serial_tun: serial_tun
+Only in /home/espen/tinyos-main/tools/tinyos/c/serial_tun: serial_tun.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/serial_tun: tun_dev.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: .deps
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: libmote.a
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: message.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: prettylisten.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: seriallisten.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: serialpacket.c
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: serialpacket.h
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: serialpacket.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: serialprotocol.h
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: serialsend.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: serialsource.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sf
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sf-listen
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sflisten.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sf.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sf-prettylisten
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sf-send
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sfsend.o
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sf-seriallisten
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sf-serialsend
+Only in /home/espen/tinyos-main/tools/tinyos/c/sf: sfsource.o
+Only in /home/espen/tinyos-main/tools/tinyos/cpp: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/cpp: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: .deps
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: sf2
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: sf2-basecomm.o
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: sf2-packetbuffer.o
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: sf2-serialcomm.o
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: sf2-sfcontrol.o
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: sf2-sf.o
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: sf2-sfpacket.o
+Only in /home/espen/tinyos-main/tools/tinyos/cpp/sf: sf2-tcpcomm.o
+Only in /home/espen/tinyos-main/tools/tinyos/java: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: ByteQueue.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: NativeSerial.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: SerialPort.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: SerialPortEvent.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: SerialPortListener.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: TOSCommJNI.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: TOSSerial.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: TOSSerial$EventDispatcher.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: TOSSerial$SerialInputStream.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: TOSSerial$SerialOutputStream.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/comm: UnsupportedCommOperationException.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: Message.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: MessageListener.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: MoteIF.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: Receiver.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: Receiver$msgTemplate.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: Sender.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: SerialPacket.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/message: SerialPacket.java
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DataModel.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DDocument$1.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DDocument$CanvasMouse.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DDocument.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DDocument$DPanel$1.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DDocument$DPanel$2.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DDocument$DPanel.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DDocument$DrawTableModel.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DDocument$LinkSetEvent.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DDocument$ValueSetEvent.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DLayer.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DLink$1.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DLink$2.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DLink.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DLinkModel.class
+diff -r ./tools/tinyos/java/net/tinyos/mviz/DLinkModel.java /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz/DLinkModel.java
+89c89
+<      * Get the link flag(startNode+“ ”+endNode)
+---
+>      * Get the link flag(startNode+" "+endNode)
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DLinkModelListener.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DMote.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DMoteModel.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DMoteModelListener.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DNavigate.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DShape$1.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DShape.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DShapeModel.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: DShapeModelListener.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/mviz: MessageInput.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: AbstractSource.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: BaudRate.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: BuildSource.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: ByteSource.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: NetworkByteSource.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: Packetizer.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: Packetizer$Escaper.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: PacketListenerIF.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: PacketSource.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: ParseArgs.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: PhoenixError.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: PhoenixSource$1.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: PhoenixSource.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: Platform.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: SerialByteSource.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: Serial.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: Serial.java
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: SFProtocol.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: SFSource.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/packet: StreamByteSource.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SerialForwarder.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SerialForwarder$SFMessenger.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFClient.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFConsoleRenderer.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFListen.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFNullRenderer.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFRenderer.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFWindow$1.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFWindow$2.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFWindow$3.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFWindow$4.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFWindow$5.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sf: SFWindow.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sim: InputVariables.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sim: LinkLayerModel.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sim: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sim: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/sim: OutputVariables.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/tools: Listen.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/tools: ListenRaw.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/tools: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/tools: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/tools: MsgReader.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/tools: PrintfClient.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/tools: PrintfMsg.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/tools: PrintfMsg.java
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/tools: Send.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: Crc.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: DiagMsg.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: Dump.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: Env.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: Messenger.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: PrintStreamMessenger.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: TOSLibraryLoader.class
+Only in /home/espen/tinyos-main/tools/tinyos/java/net/tinyos/util: ZigbitProgrammer.class
+Only in /home/espen/tinyos-main/tools/tinyos/java: tinyos.jar
+Only in /home/espen/tinyos-main/tools/tinyos/jni/env: .deps
+Only in /home/espen/tinyos-main/tools/tinyos/jni/env: libgetenv.so
+Only in /home/espen/tinyos-main/tools/tinyos/jni/env: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/jni/env: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/jni: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/jni: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/jni/serial: .deps
+Only in /home/espen/tinyos-main/tools/tinyos/jni/serial: libtoscomm.so
+Only in /home/espen/tinyos-main/tools/tinyos/jni/serial: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/jni/serial: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/misc: .deps
+Only in /home/espen/tinyos-main/tools/tinyos/misc: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/misc: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-build-deluge-image
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-check-env
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-deluge
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-dump.py
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-ident-flags
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-install-jni
+diff -r ./tools/tinyos/misc/tos-install-jni.in /home/espen/tinyos-main/tools/tinyos/misc/tos-install-jni.in
+14d13
+<   java=`tos-locate-jre --java`
+15a15
+>   java=`tos-locate-jre --java`
+31c31
+< fi
+\ No newline at end of file
+---
+> fi
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-mote-key
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-nwprog
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-serial-debug
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-serial-debug.o
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-serlook.py
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-set-symbols
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-storage-at45db
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-storage-pxa27xp30
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-storage-stm25p
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-sub-tosdir
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-write-buildinfo
+Only in /home/espen/tinyos-main/tools/tinyos/misc: tos-write-image
+Only in /home/espen/tinyos-main/tools/tinyos/ncc: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/ncc: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/ncc: mig
+Only in /home/espen/tinyos-main/tools/tinyos/ncc: ncg
+Only in /home/espen/tinyos-main/tools/tinyos/ncc: nesdoc-archive
+Only in /home/espen/tinyos-main/tools/tinyos/ncc: nesdoc-genhtml
+Only in /home/espen/tinyos-main/tools/tinyos/ncc/nesdoc-py: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/ncc/nesdoc-py: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/python: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/python: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/python/message: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/python/message: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/python/message: SerialPacket.py
+Only in /home/espen/tinyos-main/tools/tinyos/python/misc: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/python/misc: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/python/packet: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/python/packet: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/python/packet: SerialH.py
+Only in /home/espen/tinyos-main/tools/tinyos/python: tos.py
+Only in /home/espen/tinyos-main/tools/tinyos/python/tossim: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/python/tossim: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/safe: Makefile
+Only in /home/espen/tinyos-main/tools/tinyos/safe: Makefile.in
+Only in /home/espen/tinyos-main/tools/tinyos/safe: tos-decode-flid
+Only in /home/espen/tinyos-main/tools/tinyos/safe: tos-ramsize
+diff -r ./tos/chips/cc2420/alarm/AlarmMultiplexC.nc /home/espen/tinyos-main/tos/chips/cc2420/alarm/AlarmMultiplexC.nc
+47c47
+<   //provides interface Alarm<TMicro,uint32_t> as AlarmMicro32;
+---
+> 
+56d55
+<   //AlarmMicro32 = Alarm;
+diff -r ./tos/chips/cc2420/CC2420TimeSyncMessageC.nc /home/espen/tinyos-main/tos/chips/cc2420/CC2420TimeSyncMessageC.nc
+58,61c58,59
+<         //interface TimeSyncAMSend<T32khz, uint32_t> as TimeSyncAMSend32khz[am_id_t id];
+<         //interface TimeSyncPacket<T32khz, uint32_t> as TimeSyncPacket32khz;
+<         interface TimeSyncAMSend<TMicro, uint32_t> as TimeSyncAMSendMicro[am_id_t id];
+<         interface TimeSyncPacket<TMicro, uint32_t> as TimeSyncPacketMicro;
+---
+>         interface TimeSyncAMSend<T32khz, uint32_t> as TimeSyncAMSend32khz[am_id_t id];
+>         interface TimeSyncPacket<T32khz, uint32_t> as TimeSyncPacket32khz;
+72c70
+<         //TimeSyncAMSend32khz = CC2420TimeSyncMessageP;
+---
+>         TimeSyncAMSend32khz = CC2420TimeSyncMessageP;
+diff -r ./tos/chips/cc2420/CC2420TimeSyncMessageP.nc /home/espen/tinyos-main/tos/chips/cc2420/CC2420TimeSyncMessageP.nc
+41,42c41
+<         //interface TimeSyncAMSend<T32khz, uint32_t> as TimeSyncAMSend32khz[uint8_t id];
+<         interface TimeSyncAMSend<TMicro, uint32_t> as TimeSyncAMSend32khz[uint8_t id];
+---
+>         interface TimeSyncAMSend<T32khz, uint32_t> as TimeSyncAMSend32khz[uint8_t id];
+47,48c46
+<         //interface TimeSyncPacket<T32khz, uint32_t> as TimeSyncPacket32khz;
+<         interface TimeSyncPacket<TMicro, uint32_t> as TimeSyncPacket32khz;
+---
+>         interface TimeSyncPacket<T32khz, uint32_t> as TimeSyncPacket32khz;
+diff -r ./tos/chips/cc2420/control/CC2420ControlP.nc /home/espen/tinyos-main/tos/chips/cc2420/control/CC2420ControlP.nc
+376,378d375
+< 
+<     atomic autoAckEnabled = FALSE;
+<     atomic hwAutoAckDefault = FALSE;
+386d382
+<     atomic return FALSE;
+diff -r ./tos/chips/cc2420/csma/CC2420CsmaP.nc /home/espen/tinyos-main/tos/chips/cc2420/csma/CC2420CsmaP.nc
+54d53
+<   uses interface EventFramework;
+124c123
+<     /* Called within UniqueSendP.send */
+---
+>     
+130,131d128
+<         // This is the end of the sendTask chain of events
+<         call EventFramework.trace_event(2);
+159,160c156
+<     //ccaOn = TRUE;
+<     ccaOn = FALSE; // Turn off cca
+---
+>     ccaOn = TRUE;
+211d206
+<     //call EventFramework.trace_event(23); REQUIRES ATTENTION
+229,233d223
+<     /* The reason why packet forwarding can differ from 300 - 500 clock cycles
+<      * is because of this backoff set to a random number. If we set the initial
+<      * backoff to a specific magical number, the packet forwarding will be
+<      * deterministic +-1 clock ticks.
+<      */
+236d225
+<     //call SubBackoff.setInitialBackoff(0);
+257d245
+<     //call EventFramework.trace_event(45);  SRVQUEUE DEQUEUE occurring in scheduler
+267d254
+<     //call EventFramework.trace_event(46);
+diff -r ./tos/chips/cc2420/link/PacketLinkP.nc /home/espen/tinyos-main/tos/chips/cc2420/link/PacketLinkP.nc
+52d51
+<     interface EventFramework;
+120,124c119
+<     bool was_acked = call PacketAcknowledgements.wasAcked(msg);
+<     return 1;
+< 
+<     //printf("Packet with seq no %d was acked: %d\n", ((uint8_t*)msg)[3], was_acked);
+<     return was_acked;
+---
+>     return call PacketAcknowledgements.wasAcked(msg);
+137d131
+<     //call EventFramework.post_event(1, "SRV command start", "PacketLinkP.Send.send", "");
+152d145
+<       //call EventFramework.post_event(1, "SRV command stop1", "PacketLinkP.Send.send", "");
+155,156d147
+< 
+<     //call EventFramework.post_event(1, "SRV command stop2", "PacketLinkP.Send.send", "");
+181d171
+<     //call EventFramework.post_event(1, "SRV start", "PacketLinkP.SubSend.sendDone", "");
+185d174
+<         //call EventFramework.post_event(1, "Cond1", "PacketLinkP.SubSend.sendDone", "");
+189a179
+>         
+191d180
+<           //call EventFramework.post_event(1, "Cond2", "PacketLinkP.SubSend.sendDone", "");
+197d185
+<           //call EventFramework.post_event(1, "Cond3", "PacketLinkP.SubSend.sendDone", "");
+201d188
+<         //call EventFramework.post_event(1, "SRV stop2", "PacketLinkP.SubSend.sendDone", "");
+diff -r ./tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc /home/espen/tinyos-main/tos/chips/cc2420/lowpan/CC2420TinyosNetworkP.nc
+63d62
+<     interface EventFramework;
+82,84d80
+<     error_t res;
+<     // Not called
+<     ////call EventFramework.post_event(1, "SRV Start", "CC2420TinyosNetworkP.ActiveSend.send", "");
+87,89c83
+<     res = call SubSend.send(msg, len);
+<     ////call EventFramework.post_event(1, "SRV Stop", "CC2420TinyosNetworkP.ActiveSend.send", "");
+<     return res;
+---
+>     return call SubSend.send(msg, len);
+132,133d125
+<     error_t res;
+<     //call EventFramework.post_event(1, "SRV Start", "CC2420TinyosNetworkP.BareSend.send", "");
+136,138c128
+<     res = call SubSend.send(msg, 0);
+<     //call EventFramework.post_event(1, "SRV Stop", "CC2420TinyosNetworkP.BareSend.send", "");
+<     return res;
+---
+>     return call SubSend.send(msg, 0);
+170,171d159
+<     message_t *res;
+<     //call EventFramework.post_event(1, "SRV Start", "CC2420TinyosNetworkP.SubReceive.receive", "");
+181,183c169
+<       res = signal ActiveReceive.receive(msg, payload, len);
+<       //call EventFramework.post_event(1, "SRV Stop1", "CC2420TinyosNetworkP.SubReceive.receive", "");
+<       return res;
+---
+>       return signal ActiveReceive.receive(msg, payload, len);
+185c171
+<       res = signal BareReceive.receive(msg, 
+---
+>       return signal BareReceive.receive(msg, 
+188,189d173
+<       //call EventFramework.post_event(1, "SRV Stop2", "CC2420TinyosNetworkP.SubReceive.receive", "");
+<       return res;
+192,194c176
+<     res = signal ActiveReceive.receive(msg, payload, len);
+<     //call EventFramework.post_event(1, "SRV Stop3", "CC2420TinyosNetworkP.SubReceive.receive", "");
+<     return res;
+---
+>     return signal ActiveReceive.receive(msg, payload, len);
+226d207
+<       //call EventFramework.post_event(3, "Cond1", "CC2420TinyosNetworkP.Resource.request", "");
+diff -r ./tos/chips/cc2420/lpl/DefaultLplC.nc /home/espen/tinyos-main/tos/chips/cc2420/lpl/DefaultLplC.nc
+99,101d98
+< 
+<   components EventFrameworkC;
+<   DefaultLplP.EventFramework -> EventFrameworkC;
+diff -r ./tos/chips/cc2420/lpl/DefaultLplP.nc /home/espen/tinyos-main/tos/chips/cc2420/lpl/DefaultLplP.nc
+72,73d71
+< 
+<     interface EventFramework;
+322,324c320,321
+<   event message_t *SubReceive.receive(message_t* msg, void* payload, uint8_t len) {
+<     message_t *res;
+<     call EventFramework.post_event(1, "SRV Start", "DefaultLplP.SubReceive.receive", "");
+---
+>   event message_t *SubReceive.receive(message_t* msg, void* payload, 
+>       uint8_t len) {
+326,329c323
+<     res = signal Receive.receive(msg, payload, len);
+< 
+<     call EventFramework.post_event(1, "SRV Stop", "DefaultLplP.SubReceive.receive", "");
+<     return res;
+---
+>     return signal Receive.receive(msg, payload, len);
+diff -r ./tos/chips/cc2420/packet/CC2420PacketC.nc /home/espen/tinyos-main/tos/chips/cc2420/packet/CC2420PacketC.nc
+46d45
+<     interface PacketTimeStamp<TMicro, uint32_t> as PacketTimeStampMicro;
+62d60
+<   PacketTimeStampMicro = CC2420PacketP;
+65,68c63,65
+<   components CounterMicro32C, new CounterToLocalTimeC(TMicro);
+<   //components Counter32khz32C, new CounterToLocalTimeC(T32khz);
+<   CounterToLocalTimeC.Counter -> CounterMicro32C;//Counter32khz32C;
+<   CC2420PacketP.LocalTimeMicro -> CounterToLocalTimeC;//LocalTime32khz -> CounterToLocalTimeC;
+---
+>   components Counter32khz32C, new CounterToLocalTimeC(T32khz);
+>   CounterToLocalTimeC.Counter -> Counter32khz32C;
+>   CC2420PacketP.LocalTime32khz -> CounterToLocalTimeC;
+diff -r ./tos/chips/cc2420/packet/CC2420PacketP.nc /home/espen/tinyos-main/tos/chips/cc2420/packet/CC2420PacketP.nc
+51d50
+<     interface PacketTimeStamp<TMicro, uint32_t> as PacketTimeStampMicro;
+58d56
+<   uses interface LocalTime<TMicro> as LocalTimeMicro;
+68,69c66
+<     //(call CC2420PacketBody.getHeader( p_msg ))->fcf |= 1 << IEEE154_FCF_ACK_REQ;
+<     (call CC2420PacketBody.getHeader( p_msg ))->fcf |= 0 << IEEE154_FCF_ACK_REQ;
+---
+>     (call CC2420PacketBody.getHeader( p_msg ))->fcf |= 1 << IEEE154_FCF_ACK_REQ;
+74,75c71
+<     //(call CC2420PacketBody.getHeader( p_msg ))->fcf &= ~(1 << IEEE154_FCF_ACK_REQ);
+<     (call CC2420PacketBody.getHeader( p_msg ))->fcf &= 0xFFFFFF;
+---
+>     (call CC2420PacketBody.getHeader( p_msg ))->fcf &= ~(1 << IEEE154_FCF_ACK_REQ);
+80d75
+<     return TRUE;
+165,187d159
+<   /***************** PacketTimeStampMicro Commands ****************/
+<   async command bool PacketTimeStampMicro.isValid(message_t* msg)
+<   {
+<     return call PacketTimeStampMicro.isValid(msg);
+<   }
+< 
+<   async command uint32_t PacketTimeStampMicro.timestamp(message_t* msg)
+<   {
+<     //printf("\nPacketTimeStampMicro.timestamp\n");
+<     return (call CC2420PacketBody.getMetadata( msg ))->timestamp;
+<   }
+< 
+<   async command void PacketTimeStampMicro.clear(message_t* msg)
+<   {
+<     call PacketTimeStampMicro.clear(msg);
+<   }
+< 
+<   async command void PacketTimeStampMicro.set(message_t* msg, uint32_t value)
+<   {
+<     //printf("\nPacketTimeStampMicro.set\n");
+<     (call CC2420PacketBody.getMetadata( msg ))->timestamp = value;
+<   }
+< 
+196d167
+<     //printf("\nPacketTimeStamp32khz.timestamp\n");
+208d178
+<     //printf("\nPacketTimeStamp32khz.set\n");
+diff -r ./tos/chips/cc2420/receive/CC2420ReceiveP.nc /home/espen/tinyos-main/tos/chips/cc2420/receive/CC2420ReceiveP.nc
+66d65
+<   //uses interface PacketTimeStamp<TMicro,uint32_t>;
+78,79d76
+< 
+<   uses interface EventFramework;
+143,159d139
+<   uint8_t interruptfifop_fired_addr;
+<   uint8_t rxfifo_readDone_addr;
+<   uint8_t fifo_get_addr;
+<   uint8_t fifop_get_addr;
+<   uint8_t mac_packet_size_addr;
+<   uint8_t flush_rxfifo_addr;
+<   uint8_t rxfifo_overflow_addr;
+<   uint8_t good_fcf_addr;
+<   uint8_t packet_too_large_addr;
+<   uint8_t start_next_packet_addr;
+<   uint8_t packet_buffered_addr;
+<   uint8_t ack_received_addr;
+<   uint8_t beginReceive_addr;
+<   uint8_t waitForNextPacket_addr;
+<   uint8_t stdcontrol_start_addr;
+<   uint8_t reset_state_addr;
+< 
+164,165c144,145
+<   void waitForNextPacket(uint8_t pid);
+<   void flush(uint8_t pid_offset);
+---
+>   void waitForNextPacket();
+>   void flush();
+182d161
+<       //call EventFramework.post_detailed_event_2(6, 'm', (uint16_t)&__FUNCTION__, (uint16_t)&receivingPacket, receivingPacket, (uint16_t)&m_state, m_state);
+195d173
+<       //call EventFramework.post_detailed_event_1(6, 'm', (uint16_t)&__FUNCTION__, (uint16_t)&m_state, m_state);
+209d186
+<     call EventFramework.trace_event(88);
+214d190
+<       //printf("m_timestamp_queue[ tail ]: %lu\n", time);
+233,234c209,210
+< 
+<   bool ack = 0;
+---
+>   
+>   
+237,525c213
+<     /* Entire packet trail takes in 32khz clock ticks 550, 358, 462, 314, 509.
+<      * Largest difference is 314 ~ 550. This means that goal should be to find these large
+<      * discrepancies. I have already found differences in 1-3 clock ticks in this function
+<      * and the attemptSend function, but that's almost nothing compared to the whole picture.
+<      *
+<      * One clue is that I've tested multiple larger functions, and found that none of them
+<      * have large differences in execution time when running them multiple times.
+<      * If we assume this to be the case for all functions, which I'm not ready to do,
+<      * the huge differences in runtime might be caused by scheduling of tasks. One way to find
+<      * out of this is to place traces in all the larger functions and see which order they're
+<      * called, which includes events. The events are called asynchronous, and might therefore
+<      * be called before or after important packet processing functions.
+<      * In fact, if this is the case, there might be potential for improving the task system.
+<      *
+<      * The clock tick difference between the last event in this function and IPDispatchP.receive
+<      * is exactly 71 ticks. What happens in those ticks, I don't know. But considering the amount
+<      * of time is completely consistent, it is not very interesting to know that at the moment.
+<      * Before the last trace in attemptSend, a new task is run. This has been monitored by placing
+<      * traces at the SchedulerBasicP taskloop. The task that runs this interrupt ends, a new one
+<      * is run and finished, and finally the attemptSend function is run in the last task.
+<      * Tasks run in the packet processing: 
+<      * 1: Runs this interrupt and IPDispatchP.receive, at least.
+<      * 2: Does something I don't know.
+<      * 3: Runs CC2420TransmitP.attemptSend, at least. NO, this is most likely wrong. The "loop start"
+<      *    event occurring lastly is sometimes called before and sometimes after attemptSend.
+<      *    Sometimes attemptSend is called after a "loop stop" event, without starting a new task.
+<      * 221, 238 cycles between task loop start, to reaching attemptSend. This is a significant
+<      * difference that might have something to do with MAC layer and waiting.
+<      * When testing, I found that the difference between two forwarding cases was 18 cycles.
+<      * The difference in the task loop start, to reaching attemptSend was 238 - 221 = 17.
+<      * This means that the greater differences seen might be solely because of this difference.
+<      * This is a very important discovery, and should be the main thing to study moving forward.
+<      * Additional examples to prove this hypothesis:
+<      * 1: Total time: 497. Last task loop cycles: 133. Subtract the two: 364 cycles.
+<      * 2: Total time: 602. Last task loop cycles: 238. Subtract the two: 364 cycles.
+<      * 3: Total time: 584. Last task loop cycles: 221. Subtract the two: 363 cycles.
+<      * 4: Total time: 381. Last task loop cycles: . Subtract the two: cycles.
+<      * New discovery: The last loop start event isn't always called, and in which case
+<      * there won't be any large delay! What happens when this event is called, and why
+<      * is it sometimes called before attemptSend and sometimes after?
+<      * It appears as though what is calling attemptSend is BackoffTimer.fired(). attemptSend
+<      * is not called long after the BackoffTimer is started, which means it is not causing
+<      * the large delay. Although, the BackoffTimer is started within the BackoffTimer.fired
+<      * function itself, which means it could still be causing the delay. It might be that
+<      * it is fired often.
+<      * Task: Find out when the BackoffTimer is started. What is most likely causing the delay
+<      * is that the timer is called at various times based on some variable which will be
+<      * the event we have to capture.
+<      * Solution for task: I finally found the entire reason. In CC2420CsmaP, there's an event
+<      * SubBackoff.requestInitialBackoff which creates a random number for backoff. If this random
+<      * number is replaced by a constant, the entire packet processing step becomes completely
+<      * deterministic +-1 clock ticks, which is not very much in the big picture.
+<      * The next step might actually be to report the findings to the supervisors and ask for
+<      * what the next step should be. Should there even be any instrumentation in this OS?
+<      *
+<      * Instrumentation doesn't seem to be needed when the device can handle each packet one by one.
+<      * However, when increasing the frequency of packets forwarded, this might be needed.
+<      * The reason why I initally thought this wouldn't be necessary is that the device seemed to
+<      * crash on high packet frequencies. The reason for this has been found, and it's in the
+<      * HplMsp430UartP.nc file. A busy waiting loop is causing the device to get hung up.
+<      * This was fixed by wrapping the function in an atomic block, which forces the entire
+<      * block to be executed without possibility of interruption in any way. Some state must
+<      * be set some way, and not set back, causing the issue. I should still investigate what
+<      * might cause the state to get corrupted, but isn't essential. What remains is to increase
+<      * the packet frequency with the fix and be able to see how long packets take to be forwarded
+<      * with extra delay.
+<      * One problem with testing now is that packets that have been sent and acked seem to be
+<      * sent again. Why, I don't know. It actually never happens if the packet doesn't get acked.
+<      * I want to know because the goal is to only send a packet with a certain payload and
+<      * sequence number once. This way, I can identify when specific packets are received and
+<      * sent.
+<      * Ways of figuring out issue:
+<      * 1: Find out if mote 1 sends the same packet multiple times. If so, problem solved.
+<      * 2: Find out if mote 2 receives the same packet multiple times or if the blip
+<      *    layer somehow keeps the same packet in the SendQueue even though it's sent.
+<      * Method 1 seems to not be what's happening because the sequence number is always
+<      * incremented in the UDPEchoP module. When mote 2 receives a packet, we should
+<      * check what the payload for the newly arrived packet is. Remember that there are
+<      * two tasks occurring: (1): reading packet and putting in blip queue, (2) reading
+<      * queue, de-queuing and sending packet. It could be that the queue gets filled up.
+<      * One immediate test could be to always empty buffer after reading it, and see if it
+<      * becomes correct.
+<      *
+<      * New understanding of how the data flow goes when receiving a packet:
+<      * 1: This event (hardware interrupt) is evoked.
+<      * 2: IPDispatchP.Ieee154Receive.receive event is evoked after reading the packet from the radio.
+<      *    This step reads the packet, sends it up to the blip layer and decides whether to forward it or not.
+<      * 3: IPDispatchP.sendTask task is posted from previous step (IPDispatchP.IPLower.send) sends the packet.
+<      *
+<      * New theory for why packets are "dropped": The two first steps are events. If new events are called,
+<      * it might eventually cause the task queue to have to drop events, in which case packets will be dropped.
+<      * Way to test it: Print out number of tasks are in the queue in the task loop. 
+<      *
+<      * Weird things that can happen that have been proven to happen in Cooja:
+<      * 1: This hardware interrupt event can be called when the function is already running.
+<      * 2: IPDispatchP.sendTask can return because radioBusy || state != S_RUNNING. This returns
+<      *    without doing anything or reposting the task. Why not re-post the task?
+<      * 3: UniqueSendP.
+<      *
+<      * For our forwarding app, mote 2 should have this event called twice for every packet to be forwarded
+<      * to mote 3, when acks are enabled. With hardware acks and software acks, this event is called. Why,
+<      * I don't know. With acks disabled, acks don't cause this event to be called. However, it doesn't really
+<      * work to disabled them. The motes keep resending the packets because they don't get acks.
+<      *
+<      * Ack from mote 3 is received nearly 200 ms after packet has been received from mote 1. The time it takes
+<      * is from processing the packet. When packet frequency is high, it appears that this event isn't called enough
+<      * times, from looking at the radio messages. One event call should happen for each packet received
+<      * from mote 1 and ack from mote 3. This does not happen even if radio comm is detected in radio messages.
+<      * This might be due to overflow in an event call queue in CC2420 low level drivers, or perhaps multiple packets
+<      * are expected to be processed in same event call. Next task should be to print out the packets received right
+<      * in this interrupt. Log whether packet is ack and its sequence number. With that information we can look
+<      * in the radio messages window and see if the packets match. A temporary solution is to trace events in the
+<      * function that is called when additional packets need to be read. This can reveal if this call reads multiple
+<      * packets even though no packets were missed in the previous call.
+<      *
+<      * THE ABOVE IS TRUE: This event isn't necessary called for each packet, but it appears that beginReceive is.
+<      * This means that by tracing beginReceive, we can capture all packets that are recorded in the Radio messages
+<      * window in Cooja it appears. By counting the number of packets received in Cooja, there were too few calls to
+<      * this event. However, by counting number of beginReceive calls, it added up. beginReceive is potentially called
+<      * multiple times when there are multiple packets awaiting. Initially I thought this was because of that only
+<      * happening when packets have previously been missed in this event, but that's not true. There can be multiple
+<      * packets awaiting at any time, but we can record all the necessary info by tracing the beginReceive function.
+<      *
+<      * The next steps to do:
+<      * - Since we now know that all packets that are logged in Radio messages window
+<      *   actually are received here in beginReceive(), we have to find out where
+<      *   they're lost. Problem is that packet with seq-no 4 is received, but isn't
+<      *   forwarded from mote 2 to mote 3. We know that mote 1 receives a packet with
+<      *   seq-no 4, but somewhere along the line it's not being processed anymore.
+<      * - Potential reasons for why packets aren't forwarded:
+<      *   - Too many events are scheduled, and the IPDispatchP.Ieee154Receive.receive event isn't called.
+<      *   - IPDispatchP.sendTask returns without sending the packet that is to be forwarded. (We know this happens).
+<      *     - One thing that can be done here is to read the sequence number of the packet to be sent in the sendTask
+<      *       before we return from the task. That might be problematic though, so a synchronization method might suffice.
+<      * Execution report: 
+<           5 packets forwarded and acked.
+<           But only 3 unique packets.
+<           This means that sendTask only completed 
+<           correctly 3 times.
+<           Only SRV task Stop3 actually sends a packet.
+<           After this happens, the MAC layer will make
+<           sure that the packet is acked by re-sending
+<           it if no ack has been confirmed within a
+<           certain amount of time.
+< 
+<           Same packet is forwarded and acked multiple
+<           times. But since the mote is so busy, it's
+<           unable to confirm the ack before it's time to
+<           re-send it. This does confirm something
+<           though, and that's that only 3/11 packets
+<           were enqueued on the sendQueue. We need
+<           to find out why the remaining 8 weren't.
+<           Next step should be to trace the
+<           IPDispatch.Ieee154Receive.receive event, 
+<           which sends the packet up the stack.
+<      *
+<      * 
+<      *
+<      * Example:
+<         6 packets received and acked from mote 1.
+<         6 calls to UniqueReceiveP.receive occur.
+<         Only 3 packets are forwarded, which means
+<         that somewhere between UniqueReceiveP.
+<         receive and enqueueing the packet in blip,
+<         a call is returning and ignoring a packet.
+<         *****************Done for now*************
+<      * Task: Why is UniqueReceiveP.receive called 5 times,
+<      *       while beginReceive is called 20 times?
+<      *       readDone is called ~2 times after beginReceive is called,
+<      *       and UniqueReceiveP is the next event signalled.
+<      *
+<      * - Cond2 in IPDispatchP.IPLower.send results in a packet dropped.
+<      * - CC2420ReceiveP.receiveDone_task is called as many times as packets
+<      *   that will be sent to the IP layer. This means that it is called
+<      *   less times than beginReceive is called. Find out why.
+<      *   - First off, receiveDone_task is only called for packets that
+<      *     are not acks.
+<      * - 6 packets are sent from mote 1 to 2. 5 are handled in receiveDone_task.
+<      *   The reason why only 5 are handled is that only 5 of the 6 packets are
+<      *   acked. seq-no 3 and 4 are sent right after each other, but only seq-no
+<      *   4 is acked by mote 2.
+<      *   This means that with the current packet flow, every event is tracked
+<      *   to capture the packets forwarded.
+<      *   5 packets are retrieved from mote 1 to mote 2 and acked. 4 packets
+<      *   are forwarded to mote 3 and acked. 1 packet is ignored and dropped in
+<      *   Cond2 in IPDispatchP.IPLower.send.
+<      * - Increase number of packets to send to see if more discrepancies occur.
+<      * 
+<      * Next things to track:
+<      * - What causes some packets to have to be re-sent and other treated immediately?
+<      *   Shouldn't the CC2420 chip capture all of the packets until the buffer is filled up?
+<      *   Could it be that the buffer does get filled up before dropping packets?
+<      *   Or could it be that 
+<      * - What causes the state to get to the place where Cond2 in IPDispatchP.IPLower.send
+<      *   happens?
+<      * - From what it looks like, the congestion occurs on the receiving end of mote 2. The
+<      *   transmitting task seems to always do its job.
+<      *
+<      * Runtime report:
+<      *  31 total packets sent from mote 1 to mote 2.
+<         7 total acks from mote 3 to mote 2.
+< 
+<         37 total readDone calls.
+< 
+<         One packet seems to not be treated in readDone.
+<         Could this be the packet that was never received?
+<         The question though is, why does mote 1
+<         re-send other packets, but this one time
+<         when mote 2 didn't receive a packet, it only
+<         sends once?
+<         It makes sense that that one packet was never
+<         received, because otherwise it would be treated
+<         in readDone. The reason why the other ones
+<         are re-sent is because it took too long time to
+<         handle them. One weird thing is that
+<         the TX/RX success rate is 100%, so mote 2 must
+<         have received the packet somehow, but it
+<         might be at a lower level. This should be the next
+<         task.
+<      *
+<      * It appears that readDone is only called for the packets
+<      * that are handled in UniqueReceiveP. 5 packets are handled
+<      * in UniqueReceiveP, and the pattern described in readDone
+<      * shows that 5 packets were handled, including 3 acks from mote 3.
+<      * It also shows that one ack was missing, which I don't understand.
+<      * Shouldn't a missed ack cause re-transmission of the packet?
+<      * This means we need to find out where the packets are dropped.
+<      *
+<      * I believe that beginReceive does what I believed readDone to do.
+<      * What's strange is that we don't appear to read duplicate packets,
+<      * even though that's supposed to be handled in UniqueReceive. Read
+<      * CC2420 data sheet and find out if that's dealt with there.
+<      *
+<      * Could it be that the duplicate packets aren't handled because
+<      * the mote is busy and the radio is "deleting" old packets as time
+<      * goes? It would be the only explanation I can think of to the fact
+<      * that no duplicate packets are read from the chip, yet many packets
+<      * read from the Radio messages window in Cooja are retransmissions
+<      * that are successfully sent.
+<      * Trace the radio chip somehow. See the movement with the packets
+<      * received.
+<      *
+<      * Next tasks: Trace retransmissions for both data packets and acks.
+<      *             We need to know when these happen.
+<      * Future task: Find out why most packets aren't received by the radio
+<      *              with high packet frequency. 
+<      *
+<      * Theory written originally in readDone event:
+<      * Somewhere else it says that FIFOP has a threshold of 127 bytes. This means I believe
+<      * that when the threshold has been reached, the buffer has to be read completely before
+<      * any more packets can be received. This means that m_bytes_left always starts at 127 bytes
+<      * and as more payload packets must be read, this if-statement is evaluated so that more of
+<      * the buffer is read. This if-statement is only evaluated when a payload was read just before.
+<      * Cond1 will happen when there are no more packets to read from the buffer.
+<      * After that, we will wait for new packets and for the FIFOP pin to go low, and then read
+<      * m_bytes_left = 127 bytes. If this buffer size was decreased to 64 for instance, we could
+<      * read packets as they are received.
+<      * This whole theory explains why we only receive one copy of packets. When we're busy, we can
+<      * only receive around two packets = 57*2 bytes in the buffer, which means we don't get all
+<      * the duplicate packets. We can however get many acks since they're just 5 bytes.
+<      * This theory isn't completely accurate, but an estimate that needs analysis of the CC2420
+<      * datasheet. Read about FIFO, FIFOP and RXFIFO. It seems that receiving last byte of a newly
+<      * arrived packets should activate FIFOP.
+<      *
+<      * When Cond1 in readDone happens, we know that the next packet to be read is the first 
+<      * one received after this. That means that the above paragraph is false. It's always
+<      * the newly received packets that are received and read. But, when everything has been
+<      * read from the RXFIFO, it gets flushed and reset. This means that the next packets that
+<      * arrive will be the next ones to be read. Anything that's received in between starting to
+<      * read RXFIFO and flushing RXFIFO doesn't get read.
+<      *
+<      * ( m_missed_packets && call FIFO.get() ) || !call FIFOP.get().
+<      * The above means that a packet is waiting. 
+<      * !call FIFO.get() && !call FIFOP.get()
+<      * The above means RXFIFO overflow, and need to read entire FIFO and flush it out.
+<      * That means that between the overflow and flushing, no new packets will be received.
+<      * 
+<      * By tracing FIFO.get() and FIFOP.get() in the readDone function, we can come to a conclusion
+<      * on whether new packets can be received and what kind of packet we're looking at (ack or data).
+<      */
+<     //call EventFramework.post_event(1, "HIRQ event start", "CC2420ReceiveP.InterruptFIFOP.fired", "");
+<     //printf("Right after received packet\n");
+<     bool m_started;
+<     // HIRQENTRY
+<     //printf("s\n");
+<     call EventFramework.trace_event(0);
+<     m_started = m_state == S_STARTED;
+<     //call EventFramework.post_detailed_event_1(6, 'a', (uint16_t)&__FUNCTION__, (uint16_t)&m_state, m_state);
+<     if ( m_started ) {
+---
+>     if ( m_state == S_STARTED ) {
+528d215
+<       //call EventFramework.post_detailed_event_1(6, 'a', (uint16_t)&__FUNCTION__, (uint16_t)&m_state, m_state);
+533d219
+<       //call EventFramework.post_detailed_event_2(6, 'a', (uint16_t)&__FUNCTION__, (uint16_t)&receivingPacket, receivingPacket, (uint16_t)&m_state, m_state);
+537d222
+<       //call EventFramework.post_event(1, "HIRQ m_missed_packets++", "CC2420ReceiveP.InterruptFIFOP.fired", "");
+540,543d224
+< 
+<     // HIRQEXIT
+<     call EventFramework.trace_event(3);
+<     //call EventFramework.post_event(1, "HIRQ event stop", "CC2420ReceiveP.InterruptFIFOP.fired", "");
+851,862c532
+<     /*
+<     * readDone call log:
+<     *   m_state is switched on.
+<     *   mote 1 to mote 2:
+<     *     - S_RX_LENGTH: Cond2, Stop3
+<     *     - S_RX_LENGTH: Cond6, Stop3
+<     *     - S_RX_FCF: Cond7, Cond9, Stop2-ack
+<     *   mote 3 to mote 2 (ack):
+<     *     - S_RX_LENGTH: Cond3, Stop3
+<     *     - S_RX_FCF: Cond7, Cond8, Stop3
+<     */
+<     cc2420_header_t* header;
+---
+>     cc2420_header_t* header = call CC2420PacketBody.getHeader( m_p_rx_buf );
+864,871c534
+<     uint8_t* COUNT(tmpLen) buf;
+<     
+<     uint8_t no_missed_packets;
+<     uint8_t old_m_state = m_state;
+<     uint8_t pid_offset = 0;
+<     header = call CC2420PacketBody.getHeader( m_p_rx_buf );
+<     buf = TCAST(uint8_t* COUNT(tmpLen), header);
+<     no_missed_packets = (uint8_t)!m_missed_packets;
+---
+>     uint8_t* COUNT(tmpLen) buf = TCAST(uint8_t* COUNT(tmpLen), header);
+874,896d536
+<     if (m_state == S_RX_LENGTH) {
+<       // ack
+<       if (buf[0] == 5) {
+<         pid_offset = 5;
+<         call EventFramework.trace_event(24);
+<       } else {
+<         pid_offset = 2;
+<         call EventFramework.trace_event(4);
+<       }
+<     }
+<     else if (m_state == S_RX_FCF) {
+<       pid_offset = 2;
+<       call EventFramework.trace_event(7);
+<     } else if (m_state == S_RX_PAYLOAD) {
+<       // ack
+<       if (buf[0] == 5) {
+<         pid_offset = 6;
+<         call EventFramework.trace_event(29);
+<       } else {
+<         pid_offset = 4;
+<         call EventFramework.trace_event(10);
+<       }
+<     }
+909,911d548
+<         // When this happens, we know that the next packet to be read is the first one received after this.
+<         //atomic call EventFramework.post_event(1, "Cond1", "CC2420ReceiveP.RXFIFO.readDone", "");
+<         //printf("%s, flushing RXFIFO\n", __FUNCTION__);
+913,914c550
+<         call EventFramework.trace_event(42);
+<         flush(pid_offset);
+---
+>         flush();
+917d552
+<         //call EventFramework.post_detailed_event_1(6, 'b', (uint16_t)&__FUNCTION__, (uint16_t)&rxfifo_overflow_addr, !call FIFO.get() && !call FIFOP.get()); 
+919,933d553
+<           /* Theory: Somewhere else it says that FIFOP has a threshold of 127 bytes. This means I believe
+<            * that when the threshold has been reached, the buffer has to be read completely before
+<            * any more packets can be received. This means that m_bytes_left always starts at 127 bytes
+<            * and as more payload packets must be read, this if-statement is evaluated so that more of
+<            * the buffer is read. This if-statement is only evaluated when a payload was read just before.
+<            * Cond1 will happen when there are no more packets to read from the buffer.
+<            * After that, we will wait for new packets and for the FIFOP pin to go low, and then read
+<            * m_bytes_left = 127 bytes. If this buffer size was decreased to 64 for instance, we could
+<            * read packets as they are received.
+<            * This whole theory explains why we only receive one copy of packets. When we're busy, we can
+<            * only receive around two packets = 57*2 bytes in the buffer, which means we don't get all
+<            * the duplicate packets. We can however get many acks since they're just 5 bytes.
+<            */
+<           ////printf("RXFIFO overflow, m_bytes_left=%d-%d=%d, old_m_state == %d\n", m_bytes_left, rxFrameLength + 1, m_bytes_left - (rxFrameLength + 1), old_m_state);
+<           //call EventFramework.post_event(1, "m_bytes_left", "CC2420ReceiveP.RXFIFO.readDone", "");
+937d556
+<         //call EventFramework.post_detailed_event_1(6, 'b', (uint16_t)&__FUNCTION__, (uint16_t)&packet_too_large_addr, rxFrameLength <= MAC_PACKET_SIZE); 
+939d557
+<           //call EventFramework.post_detailed_event_1(6, 'b', (uint16_t)&__FUNCTION__, (uint16_t)&start_next_packet_addr, rxFrameLength <= MAC_PACKET_SIZE); 
+941d558
+<             //call EventFramework.post_detailed_event_1(6, 'b', (uint16_t)&__FUNCTION__, (uint16_t)&good_fcf_addr, rxFrameLength > SACK_HEADER_LENGTH); 
+944d560
+<               //call EventFramework.post_event(1, "Cond2", "CC2420ReceiveP.RXFIFO.readDone", "");
+946c562
+<               //call EventFramework.trace_event(43);  // This happens, but we've decommissioned it as it is not needed.
+---
+>               
+949d564
+<               //printf("rxFrameLength <= SACK_HEADER_LENGTH, %d <= %d\n", rxFrameLength, SACK_HEADER_LENGTH);
+951,953d565
+<               //call EventFramework.post_detailed_event_1(6, 'b', (uint16_t)&__FUNCTION__, (uint16_t)&m_state, m_state);
+<               //call EventFramework.post_event(1, "Cond3", "CC2420ReceiveP.RXFIFO.readDone", "");
+<               //call EventFramework.trace_event(44);
+956c568
+< 
+---
+>                             
+959d570
+<             //call EventFramework.post_event(1, "Cond4", "CC2420ReceiveP.RXFIFO.readDone", "");
+961d571
+<             //call EventFramework.post_detailed_event_1(6, 'b', (uint16_t)&__FUNCTION__, (uint16_t)&receivingPacket, receivingPacket);
+964,965c574
+<             call EventFramework.trace_event(45);
+<             waitForNextPacket(pid_offset);
+---
+>             waitForNextPacket();
+968,973d576
+<           // PEUSTART, it might be needed more generally, outside this if statement
+<           // ack
+<           if (buf[0] == 5)
+<             call EventFramework.trace_event(25);
+<           else
+<             call EventFramework.trace_event(5);
+976,977c579
+<           //call EventFramework.post_event(1, "Cond5", "CC2420ReceiveP.RXFIFO.readDone", "");
+<           flush(pid_offset);
+---
+>           flush();
+994d595
+<       // This doesn't happen for us. We use blip and need hardware acks.
+1008d608
+< 
+1012d611
+<       //call EventFramework.post_event(1, "Cond6", "CC2420ReceiveP.RXFIFO.readDone", "");
+1014,1016d612
+<       // FIGURE OUT WHAT HAPPENS HERE WHEN BUFFER SIZE IS JUST 1, AND HOW IT CAN GET THERE
+<       //if (TOS_NODE_ID == 2)
+<         //printf("%s, continueRead(%d + 1 + %d, %d - %d\n", __FUNCTION__, buf, SACK_HEADER_LENGTH, rxFrameLength, SACK_HEADER_LENGTH);
+1019,1021d614
+<       
+<       // PEUSTART, it might be needed more generally, outside this if statement
+<       call EventFramework.trace_event(8);
+1025,1026d617
+<       call CSN.set();
+<       //call EventFramework.post_event(1, "S_RX_PAYLOAD", "CC2420ReceiveP.RXFIFO.readDone", "");
+1028c619
+<       //call EventFramework.post_detailed_event_1(6, 'b', (uint16_t)&__FUNCTION__, (uint16_t)&m_missed_packets, no_missed_packets); 
+---
+>       call CSN.set();
+1031d621
+<         //call EventFramework.post_event(1, "Cond7", "CC2420ReceiveP.RXFIFO.readDone", "");
+1035d624
+<       //call EventFramework.post_detailed_event_1(6, 'b', (uint16_t)&__FUNCTION__, (uint16_t)&__FUNCTION__, ( m_missed_packets && call FIFO.get() ) || !call FIFOP.get() || !m_timestamp_size || rxFrameLength <= 10); 
+1040d628
+<         //call EventFramework.post_event(1, "Cond8", "CC2420ReceiveP.RXFIFO.readDone", "");
+1044d631
+<           //call EventFramework.post_event(1, "Cond9", "CC2420ReceiveP.RXFIFO.readDone", "");
+1061,1064d647
+<         // Whenever this happens with our configuration, the function returns right below
+<         ////call EventFramework.post_event(1, "Cond1 ack recv", "CC2420ReceiveP.RXFIFO.readDone", "");
+<         bool ieee;
+<         //printf("Before CC2420Receive.receive()\n");
+1066,1071c649
+<         //printf("After CC2420Receive.receive()\n");
+< 
+<         ieee = type == IEEE154_TYPE_DATA;
+<         if ( ieee ) {
+<           // Task enqueuing
+<           call Leds.led1Toggle();
+---
+>         if ( type == IEEE154_TYPE_DATA ) {
+1073,1075d650
+<           //call EventFramework.post_event(1, "SRV Stop2-recv-ack", "CC2420ReceiveP.RXFIFO.readDone", "");
+<           // SRVQUEUE ENQUEUE HIRQEXIT
+<           call EventFramework.trace_event(11);
+1078,1083d652
+<         // IF ACK, HIRQEXIT
+<         call Leds.led0Toggle();
+<         waitForNextPacket(pid_offset);
+<         call EventFramework.trace_event(30);
+<       } else {
+<         waitForNextPacket(pid_offset);
+1085,1088d653
+< 
+<       // The below statement was uncommented. However, to end the ack HIRQ above, we added the waitForNextPacket calls above to avoid
+<       // additional if-statements to check if the packet was an ack.
+<       // waitForNextPacket(pid_offset);
+1090c655
+<       // Only receiveDoneAckPayload comes here
+---
+>       waitForNextPacket();
+1094d658
+<       //call EventFramework.post_event(1, "default", "CC2420ReceiveP.RXFIFO.readDone", "");
+1096d659
+<       //call EventFramework.post_detailed_event_1(6, 'b', (uint16_t)&__FUNCTION__, (uint16_t)&receivingPacket, receivingPacket);
+1102,1113c665
+<     //call EventFramework.trace_event(10);
+<     if (old_m_state == S_RX_LENGTH) {
+<       // ack
+<       if (buf[0] == 5)
+<         call EventFramework.trace_event(26);
+<       else
+<         call EventFramework.trace_event(6);
+<     } else if (old_m_state == S_RX_FCF)
+<       call EventFramework.trace_event(9);
+<     //else if (m_state == S_RX_PAYLOAD)
+<     //  call EventFramework.trace_event(28);
+<     //call EventFramework.post_event(1, "SRV Stop3", "CC2420ReceiveP.RXFIFO.readDone", "");
+---
+>     
+1130c682
+<     //printf("\nTimestamp: %lu\n", call PacketTimeStamp.timestamp(m_p_rx_buf));
+---
+> 
+1135,1136d686
+<     //if (TOS_NODE_ID == 1 || TOS_NODE_ID == 2)
+<       //printf("%s, signal UniqueReceiveP received a packet, length: %d, passesAddressCheck(m_p_rx_buf): %d\n", __FUNCTION__, length, passesAddressCheck(m_p_rx_buf));
+1140,1145c690,695
+<         if(m_missed_packets > 0){
+<           m_missed_packets --;
+<         }
+<         if(authentication){
+<           length -= micLength;
+<         }
+---
+> 	if(m_missed_packets > 0){
+> 	  m_missed_packets --;
+> 	}
+> 	if(authentication){
+> 	  length -= micLength;
+> 	}
+1155,1156c705
+<     // Below is a new service
+<     waitForNextPacket(0);
+---
+>     waitForNextPacket();
+1162c711
+< 
+---
+>   
+1167,1169c716
+<   void beginReceive() {
+<     // This function takes 9-11 clock cycles, so must be checked further. 
+<     //call EventFramework.post_event(1, "SRV HIRQ Start", "CC2420ReceiveP.beginReceive", "");
+---
+>   void beginReceive() { 
+1171,1172d717
+<     //if (TOS_NODE_ID == 2 && !call FIFO.get() && !call FIFOP.get())
+<       //printf("%s, RXFIFO overflow\n", __FUNCTION__);
+1174d718
+<     //call EventFramework.post_detailed_event_2(6, 'g', (uint16_t)&__FUNCTION__, (uint16_t)&m_state, m_state, (uint16_t)receivingPacket, receivingPacket);
+1176d719
+<       //call EventFramework.post_event(4, "Cond1", "CC2420ReceiveP.beginReceive", "call SpiResource.isOwner()");
+1178,1179c721
+<     
+<     // SpiResource.immediateRequest is what brings +variable clock ticks, +-20 ticks.
+---
+>       
+1181,1182d722
+<       // This occurs mostly under normal circumstances.
+<       //call EventFramework.post_event(4, "Cond2", "CC2420ReceiveP.beginReceive", "call SpiResource.immediateRequest()");
+1183a724
+>       
+1185d725
+<       //call EventFramework.post_event(4, "Cond3", "CC2420ReceiveP.beginReceive", "call SpiResource.immediateRequest()");
+1188,1189d727
+< 
+<     //call EventFramework.post_event(1, "SRV HIRQ Stop", "CC2420ReceiveP.beginReceive", "");
+1195c733
+<   void flush(uint8_t pid_offset) {
+---
+>   void flush() {
+1212c750
+<     waitForNextPacket(pid_offset);
+---
+>     waitForNextPacket();
+1222,1228d759
+<     // Events record 8 clock cycles for this function all the time (only one test).
+<     // Strangely doesn't seem to finish before another call starts sometimes. It might
+<     // be due to the call to CSN.clr().
+<     //call EventFramework.post_event(1, "SRV Start", "CC2420ReceiveP.receive", "");
+<     //uint16_t seq_no;
+<     //nx_uint8_t *payload;
+<     //int i;
+1230d760
+<     call EventFramework.trace_event(1);
+1232,1242d761
+<     //seq_no = *(call CC2420PacketBody.getPayload(m_p_rx_buf));
+<     //payload = call CC2420PacketBody.getPayload(m_p_rx_buf);
+<     /*//printf("sequence number: ");
+<     for (i = 0; i < 200; i++) {
+<       if (payload[i] != 0)
+<         //printf("%d-%d,", i, payload[i]);
+<     }
+<     //printf("\n");*/
+<     ////printf("m_p_rx_buf memaddr: %u, payload addr: %u\n", m_p_rx_buf, call CC2420PacketBody.getPayload(m_p_rx_buf));
+<     ////printf("Received packet, payload: %s\n", );
+<     //call EventFramework.post_event(1, "SRV Stop", "CC2420ReceiveP.receive", "");
+1249,1253d767
+<    * @param pid, parameter that gets used as an offset for the tracing framework. This is to handle different
+<    *             PIDs calling the same function. It's unfortunate that we have to do it this way, but it works.
+<    *             PIDs 1-6 can call this function, which means SRVENTRY requires to occupy 6 event IDs, and there
+<    *             are two different SRVEXIT traces needed, which both require 6 unique event IDs. That means that
+<    *             this function requires to occupy 18 event IDs.
+1255,1263c769
+<   void waitForNextPacket(uint8_t pid) {
+< 
+< 
+<     // Called 11 times when 11 packets are received by mote 2 through Radio messages.
+<     // Either no more packets are awaiting, or there are packet awaiting and beginReceive
+<     // is called again. After that, this function is called from the readDone event again.
+<     //call EventFramework.post_event(1, "SRV start", "CC2420ReceiveP.waitForNextPacket", "");
+< 
+<     call EventFramework.trace_event(48+pid);
+---
+>   void waitForNextPacket() {
+1267,1269d772
+<         //call EventFramework.post_event(1, "SRV stop1", "CC2420ReceiveP.waitForNextPacket", "");
+<         // This never seems to happen. The mote has to be stopped for it to happen.
+<         //call EventFramework.trace_event(55+pid);
+1274d776
+<       //call EventFramework.post_detailed_event_1(6, 'k', (uint16_t)&__FUNCTION__, (uint16_t)&receivingPacket, receivingPacket);
+1288d789
+<         //call EventFramework.post_event(1, "Cond1", "CC2420ReceiveP.waitForNextPacket", "");
+1295d795
+<   //call EventFramework.post_detailed_event_1(6, 'k', (uint16_t)&__FUNCTION__, (uint16_t)&m_state, m_state);
+1303d802
+<         //call EventFramework.post_event(1, "Cond2", "CC2420ReceiveP.waitForNextPacket", "");
+1308d806
+<       //call EventFramework.post_event(1, "SRV stop2", "CC2420ReceiveP.waitForNextPacket", "");
+1310,1311d807
+< 
+<     call EventFramework.trace_event(55+pid);
+1320d815
+<     //call EventFramework.post_detailed_event_1(6, 'l', (uint16_t)&__FUNCTION__, (uint16_t)&receivingPacket, receivingPacket);
+diff -r ./tos/chips/cc2420/spi/CC2420SpiC.nc /home/espen/tinyos-main/tos/chips/cc2420/spi/CC2420SpiC.nc
+196a197
+> 
+diff -r ./tos/chips/cc2420/spi/CC2420SpiP.nc /home/espen/tinyos-main/tos/chips/cc2420/spi/CC2420SpiP.nc
+58d57
+<     //interface EventFramework;
+129c128
+<     
+---
+>         
+147d145
+< 
+193,198c191
+<     /*
+<      * This function is called as many times as packets are received uniquely by
+<      * the device: Either packets from mote 1 to mote 2 that are acked or
+<      * acks by mote 3 to mote 2. Count all acks to get a good estimate. It's still
+<      * possible that the ack from mote 3 is lost, but is unlikely.
+<      */
+---
+>     
+210a204
+>     
+211a206
+>     
+216,218c211
+<     error_t res;
+<     res = call SpiPacket.send( NULL, data, len );
+<     return res;
+---
+>     return call SpiPacket.send( NULL, data, len );
+diff -r ./tos/chips/cc2420/spi/CC2420SpiWireC.nc /home/espen/tinyos-main/tos/chips/cc2420/spi/CC2420SpiWireC.nc
+69,71d68
+<   // Added by Espen
+<   //components EventFrameworkC;
+<   //SpiP.EventFramework -> EventFrameworkC;
+diff -r ./tos/chips/cc2420/transmit/CC2420TransmitP.nc /home/espen/tinyos-main/tos/chips/cc2420/transmit/CC2420TransmitP.nc
+56d55
+<   //uses interface Alarm<TMicro,uint32_t> as BackoffTimer;
+60d58
+<   //uses interface PacketTimeStamp<TMicro,uint32_t>;
+87,88d84
+< 
+<   uses interface EventFramework;
+197d192
+<     // Called within CC2420CsmaP.Send.send
+288d282
+<     call EventFramework.trace_event(89);
+291d284
+<       //printf("CaptureSFD.captured time: ?, time32: %lu\n", call BackoffTimer.getNow());
+332,334c325
+<           ////call EventFramework.post_event(1, "BackoffTimer", "CC2420TransmitP.CaptureSFD.captured", "");
+<           // Multiply by 4 to avoid ack timeout because of events
+<           call BackoffTimer.start( CC2420_ACK_WAIT_DELAY * 4 );
+---
+>           call BackoffTimer.start( CC2420_ACK_WAIT_DELAY );
+398d388
+<   uint8_t piggyback_seqno = 0;
+421,423d410
+<         ++piggyback_seqno;
+<         memset((void*)0x1ed0, -1, 120);
+<         *((uint8_t*)0x1ed0) = piggyback_seqno;
+442d428
+<       ////call EventFramework.post_event(1, "Cond", "CC2420TransmitP.SpiResource.granted", "");
+470,472c456
+<     // PEUExit. PEUStart is right before TXFIFO.write in loadTXFIFO
+<     //call EventFramework.trace_event(43);
+<     //call EventFramework.trace_event(23);
+---
+> 
+482d465
+<       //printf("Before CC2420TransmitP.Send.sendDone\n");
+484d466
+<       //printf("After CC2420TransmitP.Send.sendDone\n");
+490d471
+<       ////call EventFramework.post_event(1, "Cond", "CC2420TransmitP.TXFIFO.writeDone", "");
+492,494d472
+<       call EventFramework.trace_event(23);
+< 
+<       udpechopsent = 1;  // Used by mote 1
+503d480
+<       ////call EventFramework.post_event(1, "BackoffTimer", "CC2420TransmitP.TXFIFO.writeDone", "");
+506,507d482
+< 
+<     //call EventFramework.trace_event(44);
+524d498
+<     // PEUStop
+526d499
+<       ////call EventFramework.post_event(1, "SRV Start", "CC2420TransmitP.BackoffTimer.fired", "");
+534d506
+<           ////call EventFramework.post_event(1, "BackoffTimer", "CC2420TransmitP.BackoffTimer.fired", "");
+545d516
+<           ////call EventFramework.post_event(1, "Cond", "CC2420TransmitP.BackoffTimer.fired", "");
+566,567d536
+< 
+<       ////call EventFramework.post_event(1, "HIRQ Stop", "CC2420TransmitP.BackoffTimer.fired", "");
+581d549
+<         // This is the end of the sendTask chain of events
+586d553
+<         // This is the end of the sendTask chain of events
+595d561
+<       //m_cca = FALSE; // send is called with cca=FALSE from CC2420CsmaP.Send.send
+604d569
+<     // This is the end of the sendTask chain of events
+624,625c589
+<       //m_cca = cca;
+<       m_cca = FALSE; // We want cca on when we resend
+---
+>       m_cca = cca;
+632d595
+<       ////call EventFramework.post_event(1, "BackoffTimer", "CC2420TransmitP.resend", "");
+636d598
+<       ////call EventFramework.post_event(1, "Cond", "CC2420TransmitP.resend", "");
+784,797c746
+<     int i;
+<     // This printout shows that packets that have been acked are being sent from here multiple times.
+<     // Why this isn't resolved when the packet has been acked should be investigated. This does most
+<     // likely have to do with the high packet frequency affecting the mote's ability to resolve and
+<     // wrap up the packet processing.
+<     //printf("attemptSend seq no: %d\n", ((uint8_t*)m_msg)[3]);
+<     /*for (i = 0; i < 200; i++)
+<       if (((uint8_t*)m_msg)[i] != 0 && ((uint8_t*)m_msg)[i] < 5 && ((uint8_t*)m_msg)[i] > 2)
+<         printf("%d-%d,", i, ((uint8_t*)m_msg)[i]);
+<     printf("\n");*/
+<     //printf("attemptSend seq no: %d\n", m_msg[36]);
+<     // Takes 12-13 clock ticks, probably doesn't need any special treatment at the moment.
+<     ////call EventFramework.post_event(1, "SRV Start", "CC2420TransmitP.attemptSend", "");
+<     //call EventFramework.trace_event(18);
+---
+> 
+805d753
+<         call EventFramework.trace_event(19);
+814d761
+<       //printf("attemptSend(), right before sending\n");
+833d779
+<       //call EventFramework.post_event(1, "BackoffTimer", "CC2420TransmitP.attemptSend", "");
+836,841d781
+<     
+<     // SRVSTOP for this function, then SRVSTOP for the whole packet forwarding process
+<     //call EventFramework.trace_event(20);
+<     //call EventFramework.post_event(1, "SRV Stop - Prime", "CC2420TransmitP.attemptSend", "");
+<     call Leds.led2Toggle();
+<     //printf("e\n");
+851d790
+<       ////call EventFramework.post_event(1, "BackoffTimer", "CC2420TransmitP.congestionBackoff", "");
+907,911d845
+<       // PEUStart
+<       if (TOS_NODE_ID == 2) {
+<         //printf("Should send event data here, header->length: %d\n", header->length);
+<       }
+<       call EventFramework.trace_event(21);
+diff -r ./tos/chips/cc2420/unique/UniqueReceiveP.nc /home/espen/tinyos-main/tos/chips/cc2420/unique/UniqueReceiveP.nc
+51d50
+<     interface EventFramework;
+86,87d84
+<   uint8_t has_seen_packet;
+<   uint8_t subreceive_receive_addr;
+91,94d87
+<     /* Espen believes this should be the first place one needs to look and trace
+<      * when wanting to know which (undamaged) packets have been received.
+<      * If a duplicate packet gets received, this is where we'll drop it.
+<      */
+96c89,90
+<     message_t *res;
+---
+>     uint16_t msgSource = getSourceKey(msg);
+>     uint8_t msgDsn = (call CC2420PacketBody.getHeader(msg))->dsn;
+98,114c92,93
+<     uint16_t msgSource;
+<     uint8_t msgDsn;
+< 
+<     //call EventFramework.trace_event(0);
+<     //call EventFramework.post_event(1, "SRV Start", "UniqueReceiveP.SubReceive.receive", "");
+<     //if (TOS_NODE_ID == 1 || TOS_NODE_ID == 2)
+<       //printf("UniqueReceiveP.SubReceive.receive, msg.dsn: %d\n", (call CC2420PacketBody.getHeader(msg))->dsn);
+<     msgSource = getSourceKey(msg);
+<     msgDsn = (call CC2420PacketBody.getHeader(msg))->dsn;
+< 
+<     has_seen_packet = hasSeen(msgSource, msgDsn);
+<     //call EventFramework.post_detailed_event_1(6, 'f', (uint16_t)&__FUNCTION__, (uint16_t)&has_seen_packet, (uint8_t)has_seen_packet);
+<     if(has_seen_packet) {
+<       res = signal DuplicateReceive.receive(msg, payload, len);
+<       //call EventFramework.post_event(1, "SRV Stop1", "UniqueReceiveP.SubReceive.receive", "");
+<       //call EventFramework.trace_event(0);
+<       return res;
+---
+>     if(hasSeen(msgSource, msgDsn)) {
+>       return signal DuplicateReceive.receive(msg, payload, len);
+117,120c96
+<       res = signal Receive.receive(msg, payload, len);
+<       //call EventFramework.post_event(1, "SRV Stop2", "UniqueReceiveP.SubReceive.receive", "");
+<       //call EventFramework.trace_event(0);
+<       return res;
+---
+>       return signal Receive.receive(msg, payload, len);
+diff -r ./tos/chips/cc2420/unique/UniqueSendP.nc /home/espen/tinyos-main/tos/chips/cc2420/unique/UniqueSendP.nc
+49d48
+<     interface EventFramework;
+77d75
+<     /* This command is called from ... */
+79,89d76
+<     //printf("UniqueSendP.Send.send seq no: %d\n", ((uint8_t*)msg)[36]);
+<     /*int i;
+<     printf("UniqueSendP.Send.send: ");
+<     for (i = 0; i < 200; i++)
+<       if (((uint8_t*)msg)[i] != 0 && ((uint8_t*)msg)[i] < 10)
+<         printf("%d-%d,", i, ((uint8_t*)msg)[i]);
+<     printf("\n");*/
+< 
+<     //printf("\n");
+<     // Unnecessary, just for stress-testing
+<     //call EventFramework.post_event(1, "SRV Start", "UniqueSendP.Send.send", "");
+92,94d78
+<       // If we comment out the above command and uncomment the below,
+<       // all packets sent will be of sequence number 0.
+<       //(call CC2420PacketBody.getHeader(msg))->dsn = localSendId;
+100d83
+<       //call EventFramework.post_event(1, "SRV Stop1", "UniqueSendP.Send.send", "");
+104d86
+<     //call EventFramework.post_event(1, "SRV Stop2", "UniqueSendP.Send.send", "");
+123d104
+<     //call EventFramework.post_event(1, "SRV Start", "UniqueSendP.SubSend.sendDone", "");
+126d106
+<     //call EventFramework.post_event(1, "SRV Stop", "UniqueSendP.SubSend.sendDone", "");
+diff -r ./tos/chips/ds2411/LocalIeeeEui64P.nc /home/espen/tinyos-main/tos/chips/ds2411/LocalIeeeEui64P.nc
+22,33c22,26
+<       // Code ahead has been changed by Espen
+<       // Normally, we will only assign an address if the next operation succeeds,
+<       // but for simulation, we simply assign an address.
+<       //e = call ReadId48.read(buf);
+<       eui.data[0] = 2;
+<       eui.data[1] = 0;
+<       eui.data[2] = 0;
+<       eui.data[3] = 0;
+<       eui.data[4] = 0;
+<       eui.data[5] = 0;
+<       eui.data[6] = 0;
+<       eui.data[7] = TOS_NODE_ID;
+---
+>       e = call ReadId48.read(buf);
+>       if (e == SUCCESS) {
+>         eui.data[0] = IEEE_EUI64_COMPANY_ID_0;
+>         eui.data[1] = IEEE_EUI64_COMPANY_ID_1;
+>         eui.data[2] = IEEE_EUI64_COMPANY_ID_2;
+35c28,39
+<       have_id = TRUE;
+---
+>         // 16 bits of the ID is generated by software
+>         // could be used for hardware model id and revision, for example
+>         eui.data[3] = IEEE_EUI64_SERIAL_ID_0;
+>         eui.data[4] = IEEE_EUI64_SERIAL_ID_1;
+> 
+>         // 24 least significant bits of the serial ID read from the DS2411
+>         eui.data[5] = buf[2];
+>         eui.data[6] = buf[1];
+>         eui.data[7] = buf[0];
+> 
+>         have_id = TRUE;
+>       }
+diff -r ./tos/chips/msp430/timer/Msp430ClockP.nc /home/espen/tinyos-main/tos/chips/msp430/timer/Msp430ClockP.nc
+113,124d112
+< 
+<     /*TAR = 0;
+< 
+<     // I think the below makes TimerA read CPU cycles, not microseconds
+<     // The inaccuracies we see with vanilla TimerA are still there.
+<     // Either they are because of inaccurate clock, or our inaccurate
+<     // measuring.
+<     // One insight we get from using the below config for this timer
+<     // is that the CPU seems to be running at ~3MHz, and not 4MHz.
+<     TACTL = TASSEL1 | TAIE;
+<     BCSCTL1 = RSEL2;
+<     BCSCTL2 = 0;*/
+diff -r ./tos/chips/msp430/timer/Msp430TimerMicroMapC.nc /home/espen/tinyos-main/tos/chips/msp430/timer/Msp430TimerMicroMapC.nc
+55c55,56
+<   Msp430Compare[2] = Msp430TimerC.CompareA2;
+---
+>   Msp430Compare[2] = Msp430TimerC.CompareA2; 
+>   
+diff -r ./tos/chips/msp430/usart/HplMsp430Usart0P.nc /home/espen/tinyos-main/tos/chips/msp430/usart/HplMsp430Usart0P.nc
+320d319
+<     
+diff -r ./tos/chips/msp430/usart/HplMsp430Usart1P.nc /home/espen/tinyos-main/tos/chips/msp430/usart/HplMsp430Usart1P.nc
+322,323d321
+<     printf("IFG2: %d, UTXIFG1: %d, ~UTXIFG1: %d, IFG2 & ~UTXIFG1: %d, 33 & ~UTXIFG1: %d, ~URXIFG1: %d, URXIFG1: %d\n", IFG2, UTXIFG1, ~UTXIFG1, IFG2 & ~UTXIFG1, 33 & ~UTXIFG1, ~URXIFG1, URXIFG1);
+<     printf("~(UTXIFG1 | URXIFG1): %d, &IFG2: %d\n", ~(UTXIFG1 | URXIFG1), &IFG2);
+diff -r ./tos/chips/msp430/usart/Msp430SpiNoDma0P.nc /home/espen/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDma0P.nc
+103,105d102
+<   components EventFrameworkC;
+<   SpiP.EventFramework -> EventFrameworkC;
+< 
+diff -r ./tos/chips/msp430/usart/Msp430SpiNoDmaP.nc /home/espen/tinyos-main/tos/chips/msp430/usart/Msp430SpiNoDmaP.nc
+87d86
+<   uses interface EventFramework;
+137,145c136,142
+<     atomic {
+<       // we are in spi mode which is configured to have turned off interrupts
+<       //call Usart.disableRxIntr();
+<       call Usart.tx( tx );
+<       while( !call Usart.isRxIntrPending() );
+<       call Usart.clrRxIntr();
+<       byte = call Usart.rx();
+<       //call Usart.enableRxIntr();
+<     }
+---
+>     // we are in spi mode which is configured to have turned off interrupts
+>     //call Usart.disableRxIntr();
+>     call Usart.tx( tx );
+>     while( !call Usart.isRxIntrPending() );
+>     call Usart.clrRxIntr();
+>     byte = call Usart.rx();
+>     //call Usart.enableRxIntr();
+235,236c232
+<     //printf("UsartInterrupts.rxDone\n");
+<     call EventFramework.trace_event(58);
+---
+> 
+diff -r ./tos/chips/msp430/usart/Msp430Uart0P.nc /home/espen/tinyos-main/tos/chips/msp430/usart/Msp430Uart0P.nc
+52d51
+<   // Not in use by telosb
+diff -r ./tos/chips/msp430/usart/Msp430Uart1P.nc /home/espen/tinyos-main/tos/chips/msp430/usart/Msp430Uart1P.nc
+53c53
+<   // In use by telosb
+---
+> 
+diff -r ./tos/chips/msp430/usart/Msp430UartP.nc /home/espen/tinyos-main/tos/chips/msp430/usart/Msp430UartP.nc
+179,184c179,181
+<     //if (data == 81)
+<     //  return SUCCESS;
+<     // Calling UsartResource.isOwner takes a long time, commented out to save time.
+<     //if (call UsartResource.isOwner[id]() == FALSE)
+<     //  return FAIL;
+<     //call Usart.clrTxIntr();
+---
+>     if (call UsartResource.isOwner[id]() == FALSE)
+>       return FAIL;
+>     call Usart.clrTxIntr();
+186,207c183,185
+<     //call Usart.clrIntr();
+<     //call Usart.disableIntr();
+<     // Wrapping the next two statements fixes the problem. However, it might be better
+<     // to wrap the entire function in an atomic block, or maybe the next statements.
+<     // The reason why is that if we include another while loop after this atomic block
+<     // that does the same thing as the loop inside the atomic block, the system halts.
+<     // It appears as though there might be something wrong with the interrupts.
+<     //atomic {
+<     // THE ERROR: IFG2 in HplMsp430Usart1P gets set to 0 somewhere. It's not being set
+<     // in that file. There, it is only set to -33, -17 or -49. If it is not set to 0 anywhere,
+<     // there might be corruption of data occurring somewhere. Regardless, the problem
+<     // doesn't occur when wrapping this function in an atomic block. It might be benefitial
+<     // to increase robustness of the system to include the atomic block anyway, or to suggest
+<     // it to the supervisors.
+<       call Usart.tx( data );
+<       //if (data == 81)
+<       //  call Usart.tx(10);
+<       //while( !call Usart.isTxIntrPending() );
+<     //}
+<     //
+<     //while( !call Usart.isTxIntrPending() );
+<     //call Usart.clrTxIntr();
+---
+>     call Usart.tx( data );
+>     while( !call Usart.isTxIntrPending() );
+>     call Usart.clrTxIntr();
+209,210d186
+<     //call Usart.clrIntr();
+<     //call Usart.enableIntr();
+diff -r ./tos/chips/stm25p/Stm25pBlockP.nc /home/espen/tinyos-main/tos/chips/stm25p/Stm25pBlockP.nc
+88d87
+<     printf("m_req.req = S_READ, id: %d\n", id);
+99d97
+<     printf("m_req.req = S_CRC\n");
+109d106
+<     //printf("m_req.req = S_WRITE, id: %d, m_block_state[ %d ].req: %d\n", id, id, m_block_state[ id ].req);
+118d114
+<     printf("m_req.req = S_SYNC\n");
+124d119
+<     printf("m_req.req = S_ERASE\n");
+131,132c126
+<     if ( m_block_state[ client ].req != S_IDLE ) {
+<       //printf("newRequest, not idle\n");
+---
+>     if ( m_block_state[ client ].req != S_IDLE )
+134d127
+<     }
+201d193
+<     printf("m_block_state[ id ].req = S_IDLE\n");
+diff -r ./tos/lib/net/blip/IPAddressP.nc /home/espen/tinyos-main/tos/lib/net/blip/IPAddressP.nc
+161,163c161,163
+<     //printf("IPAddress - Setting global address: ");
+<     //printf_in6addr(addr);
+<     //printf("\n");
+---
+>     printf("IPAddress - Setting global address: ");
+>     printf_in6addr(addr);
+>     printf("\n");
+diff -r ./tos/lib/net/blip/IPDispatchC.nc /home/espen/tinyos-main/tos/lib/net/blip/IPDispatchC.nc
+78,80d77
+<   components EventFrameworkC;
+<   QueueC.EventFramework -> EventFrameworkC;
+< 
+diff -r ./tos/lib/net/blip/IPDispatchP.nc /home/espen/tinyos-main/tos/lib/net/blip/IPDispatchP.nc
+76,77d75
+< 
+<     interface EventFramework;
+109,125d106
+<   uint8_t iplower_send_addr;
+<   uint8_t state_not_running;
+<   uint8_t s_info_is_null;
+<   uint8_t enqueue_not_success;
+<   uint8_t sendTask_addr;
+<   uint8_t ieee154receive_receive_addr;
+<   uint8_t ret_under_0;
+<   uint8_t headers_lowmsg_nalp;
+<   uint8_t hasFrag1_and_n_header;
+<   uint8_t recon_size_cond;
+<   uint8_t busy_or_not_running;
+<   uint8_t send_queue_empty;
+<   uint8_t failed_to_send;
+<   uint8_t ieee154send_senddone_addr;
+<   uint8_t radiocontrol_startdone_addr;
+<   uint8_t splitcontrol_stop_addr;
+< 
+154,155d134
+<   int number_dropped = 0;
+<   bool send_info_null;
+158,181c137
+<     // Queue dequeuing
+<     send_info_null = ret == NULL;
+<     //call EventFramework.post_detailed_event_1(4, 'e', (uint16_t)&__FUNCTION__, &send_info_null, send_info_null);
+<     // If ret is NULL, this means that the packet gets dropped.
+<     // Next task should be to find out exactly when this happens.
+<     if (ret == NULL) {
+<       ++number_dropped;
+<       //printf(">");
+<       // QUEUECOND send_info_queue empty and SRVEXIT
+<       call EventFramework.trace_event(14);
+<       //if (TOS_NODE_ID == 2) {
+<         //atomic *((uint8_t*)0x7f) = number_dropped;
+<         //atomic *((uint8_t*)0x7f) = 10;
+<       //}
+<       //if (number_dropped+1 % 11 == 0)
+<       //if (TOS_NODE_ID == 2)
+<       //  printf("IP layer dropped %d packets\n", number_dropped);
+<       //if (TOS_NODE_ID == 2)
+<       //  printf("call SendInfoPool.get() == NULL, dropping packet in IP layer\n");
+<       return ret;
+<     }
+< 
+<     // QUEUECOND send_info_queue notempty
+<     //call EventFramework.trace_event(30);
+---
+>     if (ret == NULL) return ret;
+193,195d148
+<     //if (TOS_NODE_ID == 2)
+<     //  printf("call SendInfoPool.put, size: %d\n", call SendInfoPool.size());
+<     // Queue enqueuing
+207d159
+<       //call EventFramework.post_detailed_event_1(6, 'h', (uint16_t)&__FUNCTION__, (uint16_t)&state, state);
+213d164
+<       //call EventFramework.post_detailed_event_1(6, 'h', (uint16_t)&__FUNCTION__, (uint16_t)&state, state);
+227d177
+<       //call EventFramework.post_detailed_event_1(6, 'j', (uint16_t)&__FUNCTION__, (uint16_t)&state, state);
+229d178
+<       //call EventFramework.post_detailed_event_1(6, 'j', (uint16_t)&__FUNCTION__, (uint16_t)&radioBusy, radioBusy);
+258,259c207
+<     // This function takes a consistent 59 clock ticks!
+<     //call EventFramework.post_event(1, "SRV Start", "IPDispatchP.deliver", "");
+---
+> 
+263,268c211,216
+<     //printf("IPDispatchP: Received IPv6 Packet\n");
+<     //printf(  "  source:    ");
+<     //printf_in6addr(&iph->ip6_src);
+<     //printf("\n  dest:      ");
+<     //printf_in6addr(&iph->ip6_dst);
+<     //printf("\n  hop limit: %i\n", iph->ip6_hlim);
+---
+>     printf("IPDispatchP: Received IPv6 Packet\n");
+>     printf(  "  source:    ");
+>     printf_in6addr(&iph->ip6_src);
+>     printf("\n  dest:      ");
+>     printf_in6addr(&iph->ip6_dst);
+>     printf("\n  hop limit: %i\n", iph->ip6_hlim);
+278,279d225
+< 
+<     //call EventFramework.post_event(1, "SRV Stop", "IPDispatchP.deliver", "");
+306c252
+<     /*if (recon->r_timeout != T_UNUSED)
+---
+>     if (recon->r_timeout != T_UNUSED)
+309c255
+<                  recon->r_bytes_rcvd, recon->r_size);*/
+---
+>                  recon->r_bytes_rcvd, recon->r_size);
+318c264
+<       //printf("timing out buffer: src: %i tag: %i\n", recon->r_source_key, recon->r_tag);
+---
+>       printf("timing out buffer: src: %i tag: %i\n", recon->r_source_key, recon->r_tag);
+320c266
+<         //printf("ip_free(%p)\n", recon->r_buf);
+---
+>         printf("ip_free(%p)\n", recon->r_buf);
+333,334c279,280
+<       /*printf ("heap region start: %p length: %u used: %u\n",
+<                   cur, (*cur & IP_MALLOC_LEN), (*cur & IP_MALLOC_INUSE) >> 15);*/
+---
+>       printf ("heap region start: %p length: %u used: %u\n",
+>                   cur, (*cur & IP_MALLOC_LEN), (*cur & IP_MALLOC_INUSE) >> 15);
+388d333
+<     /* Signaled by UniqueReceiveP. This function signals IPNeighborDiscoveryP.recv. */
+400,401c345
+<     ret_under_0 = ret < 0;
+<     if (ret_under_0) {
+---
+>     if (ret < 0) {
+403d346
+<       call EventFramework.trace_event(75);
+411,413c354
+<     headers_lowmsg_nalp = lowmsg.headers == LOWMSG_NALP;
+<     if (headers_lowmsg_nalp) {
+<       call EventFramework.trace_event(76);
+---
+>     if (lowmsg.headers == LOWMSG_NALP) {
+417,418c358
+<     hasFrag1_and_n_header = hasFrag1Header(&lowmsg) || hasFragNHeader(&lowmsg);
+<     if (hasFrag1_and_n_header) {  // Not happening
+---
+>     if (hasFrag1Header(&lowmsg) || hasFragNHeader(&lowmsg)) {
+427d366
+< 
+429d367
+<         call EventFramework.trace_event(77);
+443,446c381
+<         if (recon->r_buf != NULL) {
+<           call EventFramework.trace_event(78);
+<           goto fail;
+<         }
+---
+>         if (recon->r_buf != NULL) goto fail;
+451,454c386
+<         if (recon->r_buf == NULL) {
+<           call EventFramework.trace_event(78);
+<           goto fail;
+<         }
+---
+>         if (recon->r_buf == NULL) goto fail;
+460d391
+<         call EventFramework.trace_event(79);
+473c404
+<     } else {  // Happening
+---
+>     } else {
+489,490c420
+<       recon_size_cond = recon.r_size == recon.r_bytes_rcvd;
+<       if (recon_size_cond) {
+---
+>       if (recon.r_size == recon.r_bytes_rcvd) {
+492a423
+>         // printf("ip_free(%p)\n", recon.r_buf);
+500d430
+< 
+509d438
+<     /* Posted within IPDispatchP.send */
+512,524c441,442
+<     busy_or_not_running = radioBusy || state != S_RUNNING;
+< 
+<     if (busy_or_not_running) {
+<       call EventFramework.trace_event(70);
+<       return;
+<     }
+< 
+<     send_queue_empty = call SendQueue.empty();
+<     if (send_queue_empty) {
+<       //call EventFramework.trace_event(71);  // This happens, but we've decommissioned it as it is unneccessary.
+<       return;
+<     }
+<     call EventFramework.trace_event(91);
+---
+>     if (radioBusy || state != S_RUNNING) return;
+>     if (call SendQueue.empty()) return;
+534d451
+<       call EventFramework.trace_event(72);
+539,541c456,457
+<     failed_to_send = (call Ieee154Send.send(s_entry->msg, call BarePacket.payloadLength(s_entry->msg))) != SUCCESS;
+<     if (failed_to_send) {
+<       call EventFramework.trace_event(73);
+---
+>     if ((call Ieee154Send.send(s_entry->msg,
+>                      call BarePacket.payloadLength(s_entry->msg))) != SUCCESS) {
+548d463
+<     //printf("End of sendTask\n");
+551c466
+<     call EventFramework.trace_event(41);
+---
+>     printf("SEND FAIL\n");
+562d476
+< 
+564a479
+> 
+579d493
+<     /* Called within IPNeighborDiscoveryP.send */  
+587,589c501
+<       
+<     // This function takes exactly 44 clock ticks! Is called within UniqueReceiveP.SubReceive.receive
+<     state_not_running = state != S_RUNNING;
+---
+> 
+591d502
+<       call EventFramework.trace_event(74);
+610,611d520
+< 
+<     s_info_is_null = s_info == NULL;
+613,614d521
+<       // This results in a packet dropped and not forwarded.
+<       //printf("IPDispatchP.IPLower.send drop packet\n");
+621,623d527
+<       call EventFramework.trace_event(49);
+<       //call EventFramework.post_event(4, "Loop Start", "IPDispatchP.IPLower.send", "");
+< 
+626d529
+<       call EventFramework.trace_event(50);
+629,631c532
+<         if (s_entry != NULL) {
+<           //if (TOS_NODE_ID == 2)
+<           //  printf("call SendEntryPool.put, size: %d\n", call SendEntryPool.size());
+---
+>         if (s_entry != NULL)
+633,636c534
+<         }
+<         if (outgoing != NULL) {
+<           //if (TOS_NODE_ID == 2)
+<           //  printf("call FragPool.put, size: %d\n", call FragPool.size());
+---
+>         if (outgoing != NULL)
+638d535
+<         }
+642c539
+<         //printf("drops: IP send: no fragments\n");
+---
+>         printf("drops: IP send: no fragments\n");
+646d542
+<       call EventFramework.trace_event(51);
+649d544
+<       call EventFramework.trace_event(52);
+655d549
+<       call EventFramework.trace_event(53);
+657c551
+<         //printf(" get frag error: %i\n", frag_len);
+---
+>         printf(" get frag error: %i\n", frag_len);
+660c554
+<       //printf("fragment length: %i offset: %i\n", frag_len, ctx.offset);
+---
+>       printf("fragment length: %i offset: %i\n", frag_len, ctx.offset);
+663d556
+<       call EventFramework.trace_event(54);
+665,666d557
+<         //if (TOS_NODE_ID == 2)
+<         //  printf("call FragPoolPool.put, size: %d, call SendEntryPool.put, %d\n", call FragPool.size(), call SendEntryPool.size());
+672,677c563
+<       call EventFramework.trace_event(40);
+<       enqueue_not_success = call SendQueue.enqueue(s_entry) != SUCCESS;
+<       //printf("call SendQueue.enqueue worked: %d\n", !enqueue_not_success);
+<       ////call EventFramework.post_detailed_event_1(6, (uint16_t)&__FUNCTION__, (uint16_t)&enqueue_not_success, enqueue_not_success);
+<       if (enqueue_not_success) {
+<         //call EventFramework.post_event(3, "Cond3", "IPDispatchP.IPLower.send", "call SendQueue.enqueue(s_entry) != SUCCESS");
+---
+>       if (call SendQueue.enqueue(s_entry) != SUCCESS) {
+685c571
+<         //printf("drops: IP send: enqueue failed\n");
+---
+>         printf("drops: IP send: enqueue failed\n");
+709,710d594
+<     // Task enqueuing
+<     call EventFramework.trace_event(41);
+718d601
+<     call EventFramework.trace_event(66);
+733,735c616,617
+<       // Removed printout because I didn't want printouts
+<       /*printf("sendDone: was not delivered! (%i tries)\n",
+<                  call PacketLink.getRetries(msg));*/
+---
+>       printf("sendDone: was not delivered! (%i tries)\n",
+>                  call PacketLink.getRetries(msg));
+750,751d631
+<     //if (TOS_NODE_ID == 2)
+<     //  printf("call FragPool.put, size: %d, call SendEntryPool.put, size: %d\n", call FragPool.size(), call SendEntryPool.size());
+756,758c636
+<     // Task enqueuing
+<     call EventFramework.trace_event(41); 
+<     post sendTask();  // Why is this being posted here? Is it to send any potential packets that are waiting to be sent?
+---
+>     post sendTask();
+771c649
+<     /*printf("frag: %i sendinfo: %i sendentry: %i sendqueue: %i heap: %i\n",
+---
+>     printf("frag: %i sendinfo: %i sendentry: %i sendqueue: %i heap: %i\n",
+776c654
+<                stats.heapfree);*/
+---
+>                stats.heapfree);
+diff -r ./tos/lib/net/blip/IPForwardingEngineP.nc /home/espen/tinyos-main/tos/lib/net/blip/IPForwardingEngineP.nc
+32d31
+<     interface EventFramework;
+159,162d157
+<       //printf("lookupRoute.prefixlen: %d, valid: %d\n", routing_table[i].prefixlen, routing_table[i].valid);
+<       //printf_in6addr(prefix);printf("\n");
+<       //printf_in6addr(&routing_table[i].prefix.s6_addr);printf("\n");
+<       //printf_in6addr(&routing_table[i].prefix);printf("\n");
+169d163
+<         //printf("routing_table[i].next_hop: ");printf_in6addr(&routing_table[i].next_hop);printf("\n");
+193c187
+<     if (iid != NULL) {
+---
+>     if (iid != NULL)
+195d188
+<     }
+197c190
+<     if (rc != SUCCESS && iid != NULL) {
+---
+>     if (rc != SUCCESS && iid != NULL)
+199,200d191
+<     }
+< 
+266d256
+<     /* Signaled by IPNeighborDiscoveryP.rec. Enqueues packets to be forwarded. */
+273c263
+<       .iov_base = payload/*0x1ec8*/, // 0x1eca == events in EventFrameworkP
+---
+>       .iov_base = payload,
+277,282d266
+<     //int i;
+<     /* This function takes in clock ticks 59-60-63. This function is called within the call
+<      * of IPDispatch.receive.
+<      */
+<     //printf("IPForward.recv seq no: %d\n", ((uint8_t*)payload)[9]);
+< 
+286d269
+<     //printf("addr: ");printf_in6addr(&iph->ip6_dst.s6_addr);printf("\n");
+295d277
+<       // Currently this test will fail because ip6_hlim == 1. We simply ignore it.
+297,300d278
+<         //printf("RETURNING1\n");
+<         // This happens when mote 2 forwards a packet to mote 3. There might be
+<         // a way of getting ip6_hlim to be higher than 1, but currently this return
+<         // gets ignored instead.
+302,303c280,281
+<         //call ForwardingEvents.drop(iph, payload, len, ROUTE_DROP_HLIM);
+<         //return;
+---
+>         // call ForwardingEvents.drop(iph, payload, len, ROUTE_DROP_HLIM);
+>         return;
+337,344c315,322
+<       //printf("IPForwardingEngineP: Forwarding IPv6 Packet:\n");
+<       //printf(  "  source:   ");
+<       //printf_in6addr(&pkt.ip6_hdr.ip6_src);
+<       //printf("\n  dest:     ");
+<       //printf_in6addr(&pkt.ip6_hdr.ip6_dst);
+<       //printf("\n  next hop: ");
+<       //printf_in6addr(next_hop);
+<       //printf("\n");
+---
+>       printf("IPForwardingEngineP: Forwarding IPv6 Packet:\n");
+>       printf(  "  source:   ");
+>       printf_in6addr(&pkt.ip6_hdr.ip6_src);
+>       printf("\n  dest:     ");
+>       printf_in6addr(&pkt.ip6_hdr.ip6_dst);
+>       printf("\n  next hop: ");
+>       printf_in6addr(next_hop);
+>       printf("\n");
+348d325
+< 
+354d330
+<     // This function takes 8 clock ticks. Is called after the attemptSend function is called, even after ack.
+356a333
+>     //printf("sendDone: iface: %i key: %p\n", ifindex, iid);
+370,371c347
+<     //return;
+<     /*printf("\n#    ");
+---
+>     printf("\n#    ");
+374c350
+<     printf("iface\n");*/
+---
+>     printf("iface\n");
+379c355
+<         //printf("%-5i", ctr++);
+---
+>         printf("%-5i", ctr++);
+383c359
+<         //printf("%-43s", print_buf);
+---
+>         printf("%-43s", print_buf);
+386c362
+<         //printf("%-26s", print_buf);
+---
+>         printf("%-26s", print_buf);
+388c364
+<         //printf("%i\n", routing_table[i].ifindex);
+---
+>         printf("%i\n", routing_table[i].ifindex);
+391c367
+<     //printf("\n");
+---
+>     printf("\n");
+diff -r ./tos/lib/net/blip/IPNeighborDiscoveryP.nc /home/espen/tinyos-main/tos/lib/net/blip/IPNeighborDiscoveryP.nc
+52d51
+<     interface EventFramework;
+331c330
+<      
+---
+> 
+574,575d572
+<     /* Called by IPForwardingEngineP do_send within IPForward.recv.
+<      * This function enqueues packets and calls IPDispatchP.send . */
+578,584d574
+<     error_t res;
+< 
+<     /* This function takes exactly 50 ticks consistently. It is called within IPDispatchP.receive,
+<      * but not only there. Therefore we don't need to record it yet because IPDispatchP.receive is
+<      * also consistent.
+<      */
+< 
+605a596,599
+>     //printf("IPNeighborDiscovery: Converting to 15.4 addresses\n");
+>     //printf(  "  source: "); printf_ieee154addr(&fr_addr.ieee_src);
+>     //printf("\n  dest:   "); printf_ieee154addr(&fr_addr.ieee_dst);
+>     //printf("\n");
+612,618c606
+<     //printf("IPNeighborDiscovery: Converting to 15.4 addresses\n");
+<     //printf(  "  source: "); printf_ieee154addr(&fr_addr.ieee_src);
+<     //printf("\n  dest:   "); printf_ieee154addr(&fr_addr.ieee_dst);
+<     //printf("\n");
+<     res = call IPLower.send(&fr_addr, msg, ptr);
+< 
+<     return res;
+---
+>     return call IPLower.send(&fr_addr, msg, ptr);
+diff -r ./tos/lib/net/blip/IPPacketC.nc /home/espen/tinyos-main/tos/lib/net/blip/IPPacketC.nc
+43c43
+<       if (iov_read(payload, off, sizeof(ext), (void *)&ext) != sizeof(ext)) {
+---
+>       if (iov_read(payload, off, sizeof(ext), (void *)&ext) != sizeof(ext))
+45d44
+<       }
+52c51
+<     if (nxt == IPV6_NONEXT) {
+---
+>     if (nxt == IPV6_NONEXT)
+54,55c53
+<     }
+<     else {
+---
+>     else
+57d54
+<     }
+diff -r ./tos/lib/net/blip/IPProtocolsP.nc /home/espen/tinyos-main/tos/lib/net/blip/IPProtocolsP.nc
+21d20
+<     interface EventFramework;
+56d54
+<     error_t x;
+59,60c57,58
+<     /*printf("IP Protocol send - nxt_hdr: %i iov_len: %i plen: %u\n",
+<                nxt_hdr, iov_len(msg->ip6_data), ntohs(msg->ip6_hdr.ip6_plen));
+---
+>     //printf("IP Protocol send - nxt_hdr: %i iov_len: %i plen: %u\n",
+>     //           nxt_hdr, iov_len(msg->ip6_data), ntohs(msg->ip6_hdr.ip6_plen));
+70c68,69
+<     }*/
+---
+>     }
+> 
+72,74c71
+<     x = call SubIP.send(msg);
+<     return x;
+<     //return call SubIP.send(msg);
+---
+>     return call SubIP.send(msg);
+diff -r ./tos/lib/net/blip/UdpP.nc /home/espen/tinyos-main/tos/lib/net/blip/UdpP.nc
+82,84c82,84
+<     //printf("UDP - IP.recv: len: %i (%i, %i) srcport: %u dstport: %u\n",
+<     //    ntohs(iph->ip6_plen), len, ntohs(udph->len),
+<     //    ntohs(udph->srcport), ntohs(udph->dstport));
+---
+>     printf("UDP - IP.recv: len: %i (%i, %i) srcport: %u dstport: %u\n",
+>         ntohs(iph->ip6_plen), len, ntohs(udph->len),
+>         ntohs(udph->srcport), ntohs(udph->dstport));
+86,88c86
+<     for (i = 0; i < N_CLIENTS; i++) {
+<       break; // This "check" does not work for some reason, and we return below. This is the only thing that does not work.
+<       //printf("i: %u, local_ports[i]: %u, N_CLIENTS: %u, udph->dstport: %u\n", i, local_ports[i], N_CLIENTS, udph->dstport);
+---
+>     for (i = 0; i < N_CLIENTS; i++)
+91d88
+<     }
+106,107c103
+<     //printf("rx_cksum: 0x%x my_cksum: 0x%x\n", rx_cksum, my_cksum);
+<     //printf("Received packet\n");
+---
+>     printf("rx_cksum: 0x%x my_cksum: 0x%x\n", rx_cksum, my_cksum);
+110c106
+<       /*printf("udp ckecksum computation failed: mine: 0x%x theirs: 0x%x [0x%x]\n",
+---
+>       printf("udp ckecksum computation failed: mine: 0x%x theirs: 0x%x [0x%x]\n",
+112c108
+<       printf_buf((void *)iph, sizeof(struct ip6_hdr));*/
+---
+>       printf_buf((void *)iph, sizeof(struct ip6_hdr));
+diff -r ./tos/lib/printf/SerialPrintfC.nc /home/espen/tinyos-main/tos/lib/printf/SerialPrintfC.nc
+39d38
+<     interface Putchar; // Added by Espen
+54d52
+<   Putchar = SerialPrintfP;
+diff -r ./tos/lib/rfxlink/layers/ActiveMessageLayerP.nc /home/espen/tinyos-main/tos/lib/rfxlink/layers/ActiveMessageLayerP.nc
+126d125
+< 		//call EventFramework.post_event(1, "SRV Start", "ActiveMessageLayerP.SubReceive.receive", "");
+137d135
+< 		//call EventFramework.post_event(1, "SRV Stop", "ActiveMessageLayerP.SubReceive.receive", "");
+diff -r ./tos/platforms/iris/platform.h /home/espen/tinyos-main/tos/platforms/iris/platform.h
+0a1
+> #define __AVR_ATmega1281__
+diff -r ./tos/platforms/telosa/chips/cc2420/HplCC2420AlarmC.nc /home/espen/tinyos-main/tos/platforms/telosa/chips/cc2420/HplCC2420AlarmC.nc
+44c44
+<   //provides interface Alarm<TMicro,uint32_t> as AlarmMicro32;
+---
+> 
+50d49
+<   //components new AlarmMicro32C();
+54c53
+<   //AlarmMicro32 = AlarmMicro32C;
+---
+>   
+diff -r ./tos/platforms/telosa/chips/cc2420x/tmicro/Msp430Timer32khzMapC.nc /home/espen/tinyos-main/tos/platforms/telosa/chips/cc2420x/tmicro/Msp430Timer32khzMapC.nc
+51c51
+< dfs
+---
+> 
+diff -r ./tos/platforms/telosa/TelosSerialP.nc /home/espen/tinyos-main/tos/platforms/telosa/TelosSerialP.nc
+9,11d8
+<   //msp430_uart_union_config_t msp430_uart_telos_config = { {ubr: UBR_1MHZ_230400, umctl: UMCTL_1MHZ_230400, ssel: 0x02, pena: 0, pev: 0, spb: 0, clen: 1, listen: 0, mm: 0, ckpl: 0, urxse: 0, urxeie: 1, urxwie: 0, utxe : 1, urxe : 1} };
+<   //msp430_uart_union_config_t msp430_uart_telos_config = { {ubr: UBR_1MHZ_9600, umctl: UMCTL_1MHZ_9600, ssel: 0x02, pena: 0, pev: 0, spb: 0, clen: 1, listen: 0, mm: 0, ckpl: 0, urxse: 0, urxeie: 1, urxwie: 0, utxe : 1, urxe : 1} };
+<   //msp430_uart_union_config_t msp430_uart_telos_config = { {ubr: UBR_1MHZ_38400, umctl: UMCTL_1MHZ_38400, ssel: 0x02, pena: 0, pev: 0, spb: 0, clen: 1, listen: 0, mm: 0, ckpl: 0, urxse: 0, urxeie: 1, urxwie: 0, utxe : 1, urxe : 1} };
+diff -r ./tos/system/PoolP.nc /home/espen/tinyos-main/tos/system/PoolP.nc
+67d66
+<     //printf("%s, free = size: %d = %d\n", __FUNCTION__, free, size);
+81,84d79
+<     if (TOS_NODE_ID == 2) {
+<       //printf("%s: %d, addr of __FUNCTION__: 0x%x\n", __FUNCTION__, (int)free, &__FUNCTION__);
+<       //printf("PoolP__0__Pool__size: %d\n", (uint16_t)&PoolP__0__Pool__size);
+<     }
+94,95d88
+<     //if (TOS_NODE_ID == 2)
+<       //printf("%s free: %d\n", __FUNCTION__, free);
+111,112d103
+<     //if (TOS_NODE_ID == 2)
+<     //  printf("PoolP.Pool.put size: %d, free: %d\n", size, free);
+114,115d104
+<       //if (TOS_NODE_ID == 2)
+<       //  printf("Pool.put free >= size\n");
+121d109
+<         //printf("Pool.put emptyIndex >= size\n");
+diff -r ./tos/system/QueueC.nc /home/espen/tinyos-main/tos/system/QueueC.nc
+44d43
+<   uses interface EventFramework;
+92,99c91
+<     //if (TOS_NODE_ID == 2)
+<       //printf("QueueC.dequeue: Size: %d, max size: %d\n", size, QUEUE_SIZE);
+<     // THESE CHANGES DIDN'T FIX THAT SAME PACKETS ARE SENT MULTIPLE TIMES.
+<     // EITHER THE SAME PACKETS ARE ENQUEUED MULTIPLE TIMES, OR THE ERROR
+<     // OCCURS IN THE NEIGHBOURDISCOVERY FILE WHEN ACTUALLY SENDING.
+<     //queue_t t = queue[0];
+<     //size = 0;
+<     //dbg("QueueC", "%s: size is %hhu\n", __FUNCTION__, size);
+---
+>     dbg("QueueC", "%s: size is %hhu\n", __FUNCTION__, size);
+110,111d101
+<     //call EventFramework.post_event(1, "SRV start", "QueueC.Queue.enqueue", "");
+<     //printf("QueueC.Queue.enqueue before size: %d\n", size);
+119,120d108
+<       //printf("QueueC.Queue.enqueue after size: %d\n", size);
+<       //call EventFramework.post_event(1, "SRV stop1", "QueueC.Queue.enqueue", "");
+124,125d111
+<       //printf("QueueC.Queue.enqueue after size: %d\n", size);
+<       //call EventFramework.post_event(1, "SRV stop2", "QueueC.Queue.enqueue", "");
+diff -r ./tos/system/SchedulerBasicP.nc /home/espen/tinyos-main/tos/system/SchedulerBasicP.nc
+53d52
+< #include <stdio.h>
+59d57
+<   uses interface EventFramework;
+82d79
+<     //call EventFramework.post_event(1, "SRV Start", "SchedulerBasicP.popTask", "");
+92d88
+<       //call EventFramework.post_event(1, "SRV Stop", "SchedulerBasicP.popTask", "");
+97d92
+<       //call EventFramework.post_event(1, "SRV Stop", "SchedulerBasicP.popTask", "NO_TASK");
+109d103
+<     //call EventFramework.post_event(1, "Pushing task", "SchedulerBasicP.pushTask", "");
+122d115
+<       //call EventFramework.post_event(1, "SRV Stop", "SchedulerBasicP.pushTask", "");
+127d119
+<       //call EventFramework.post_event(1, "SRV Stop", "SchedulerBasicP.pushTask", "");
+145d136
+<     //call EventFramework.post_event(1, "SRV Start", "SchedulerBasicP.runNextTask", "");
+151d141
+<         //call EventFramework.post_event(1, "SRV Stop", "SchedulerBasicP.runNextTask", "");
+156d145
+<     //call EventFramework.post_event(1, "SRV Stop", "SchedulerBasicP.runNextTask", "");
+160,161d148
+<   //uint32_t cnt = 0;
+<   uint8_t scheduler_taskloop_addr;
+164,165d150
+<     // LOOPSTART taskloop
+<     call EventFramework.trace_event(33);
+172,196c157,160
+<           uint8_t no_task = (uint8_t)((nextTask = popTask()) == NO_TASK);
+<           /*if (no_task)
+<             call EventFramework.trace_event(35); // QUEUECOND - LOOPSTART
+<           else
+<             call EventFramework.trace_event(34); // QUEUECOND*/
+<         	while (no_task)
+<         	{
+<             // If we don't sleep, we can't be pre-empted. The preemption only works if we go to sleep.
+<             // But then how do we preempt for readDonePayload_ack to sendDone? Do we temporarily sleep there?
+<             //printf("b\n");
+<             //cnt = 0;
+<             //while (cnt++ < 100000)
+<             //  call EventFramework.trace_event(10);
+<             //printf("Sleeping\n");
+<             //printf("Waking\n");
+<             //call EventFramework.trace_event(96);
+<             call McuSleep.sleep();
+<             //call EventFramework.trace_event(97);
+<             //printf("a\n");
+<             no_task = (uint8_t)((nextTask = popTask()) == NO_TASK);
+<             /*if (no_task)
+<               call EventFramework.trace_event(36); // WAKEUP - QUEUECOND - LOOPRSTART
+<             else
+<               call EventFramework.trace_event(37); // WAKEUP - QUEUECOND - LOOPSTOP*/
+<           }
+---
+> 	while ((nextTask = popTask()) == NO_TASK)
+> 	{
+> 	  call McuSleep.sleep();
+> 	}
+198,199d161
+<       
+<       call EventFramework.trace_event(39); // CTXSW DEQUEUE SRVQUEUE task_queue
+201,202d162
+<       //call EventFramework.post_event(4, "Loop Stop", "SchedulerBasicP.taskLoop", "");
+<       call EventFramework.trace_event(38); // LOOPRSTART
+212,213d171
+<     // Task enqueuing, currently breaks the system because event framework uses tasks
+<     //call EventFramework.post_detailed_event_0(5, 'e', (uint16_t)&__FUNCTION__);

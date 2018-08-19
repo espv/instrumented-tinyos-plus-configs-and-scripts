@@ -1,0 +1,120 @@
+0 bytes UDP payload leads to 36 bytes in packet.
+
+# Real mote analysis
+
+89-0: This is approximately the amount of time it takes to send the packet, and corresponds pretty accurately to the amount of bytes in the packet and the time it takes to send them ((bytes*8)/250000 seconds).
+
+89-88: UDP payloads 0: 86 µs, 80: 88 µs
+88-89: UDP payloads 0: 1141 µs, 20: 1810 µs, 40: 2487 µs, 60: 3141 µs, 80: 3810 µs = LINEAR according to CC2420 250kbps
+89-0: UDP payloads 0: 107 µs, 80: 107 µs
+
+0-3: HIRQ-1 takes 285 µs no matter how large the packet is and high the pps is.
+0-1:
+1-2:
+2-3:
+
+3-4: Processing stage between HIRQ-1 and HIRQ-2 takes 76 µs, regardless of packet size and pps.
+
+4-6: HIRQ-2 takes 157 µs, regardless of packet size and pps.
+4-5:
+5-6:
+
+6-7: Processing stage between HIRQ-2 and HIRQ-3 takes 318 µs, regardless of packet size. However, during high pps, the time is sometimes 214. Need to investigate why.
+
+7-9: HIRQ-3 takes 148 µs, always.
+7-8:
+8-9:
+
+9-10: UDP payloads 0: 1288 µs, 80: 4808 µs, 40: 3049 µs, 20: 2169 µs, 60: 3929 µs = LINEAR,
+needs manual calculation. 1288 + 44 per byte. Happens regardless of pps. Speeds look like the SPI bus has a bit rate of 192000.
+
+10-11: HIRQ-4 takes 179 µs, always.
+
+11-39: 59 µs, regardless of packet size or pps.
+# Cooja seems to believe that event 89 occurs twice between 39 and 40.
+39-40: UDP payloads 0: 2209 µs, 80: 2547 µs, 40: 2392 µs, 20: 2315 µs, 60: 2470 µs = LINEAR,
+needs manual calculation. Happens regardless of pps. Is 100% due to two calls to memcpy which copy the UDP payload.
+UDP payload 80 results in total of 446 µs for the calls to the functions that call memcpy, UDP payload 0 results in total of 106 µs,
+UDP payload 1 results in total of 140 µs. 446 - 106 = 340. 2547 - 2209 = 2547 - 2209 = 338.
+Basic formula is: 2209 microseconds + ((2547-2209)/80) microseconds per byte in UDP payload.
+40-41: UDP payloads 0: 530 µs, 80: 530 µs, regardless of pps.
+41-38: UDP payloads 0: 226 µs, 80: 226 µs, regardless of pps.
+38-39: UDP payloads 0: 54 µs, 80: 54 µs, sometimes takes 441 µs during high pps.
+39-91: UDP payloads 0: 56 µs, 80: 56 µs, 4/136 takes 507 µs during high pps.
+91-21: UDP payloads 0: 262 µs, 80: 262 µs, also during high pps.
+21-38: UDP payloads 0: 429 µs, 80: 429 µs, often takes 366 µs during high pps-
+38-23: UDP payloads 0: 1448 µs, 80: 4948 µs, 40: 3283 µs, 20: 2321 µs, 60: 4071 µs = LINEAR,
+needs manual calculation. 1448 + 44. Happens regardless of pps. Speeds look like the SPI bus has a bit rate of 192000.
+
+In 9-10 and 38-23, the microcontroller either writes or reads the packet into memory, and that takes the same amount of time per byte.
+When reading the packet into memory, between HIRQ-1 and HIRQ-2, there is 1 (1 byte) read done from the RXFIFO through SPI. Between HIRQ-2 and
+HIRQ-3, there are four reads done (1 byte, 2 byte, 2 byte, 1 byte), so 7 bytes are always read before the payload.
+Between HIRQ-3 and HIRQ-4, there is round_up((amount of bytes in packet - 7 bytes)/2).
+
+23-89: UDP payloads 0: 113 µs, 80: 114 µs
+89-89: UDP payloads 0: 1258 µs, 80: 3926 µs, 40: 2602 µs, 20: 1932 µs, 60: 3258 µs = LINEAR according to CC2420 250kbps
+89-39:
+39-41:
+41-38:
+38-39:
+39-38:
+
+
+# Cooja analysis
+
+89-0: This is approximately the amount of time it takes to send the packet, and corresponds pretty accurately to the amount of bytes in the packet and the time it takes to send them ((bytes*8)/250000 seconds).
+
+89-88: UDP payloads 0: 86 µs, 80: 88 µs
+88-89: UDP payloads 0: 1141 µs, 20: 1810 µs, 40: 2487 µs, 60: 3141 µs, 80: 3810 µs = LINEAR according to CC2420 250kbps
+89-0: UDP payloads 0: 107 µs, 80: 107 µs
+
+0-3: HIRQ-1 takes 698 µs no matter how large the packet is and high the pps is.
+0-1:
+1-2:
+2-3:
+
+3-4: Processing stage between HIRQ-1 and HIRQ-2 takes  µs, regardless of packet size and pps.
+
+4-6: HIRQ-2 takes  µs, regardless of packet size and pps.
+4-5:
+5-6:
+
+6-7: Processing stage between HIRQ-2 and HIRQ-3 takes  µs, regardless of packet size. However, during high pps, the time is sometimes 214. Need to investigate why.
+
+7-9: HIRQ-3 takes  µs, always.
+7-8:
+8-9:
+
+9-10: UDP payloads 0: 1056 µs, 80: 2980 µs, 40:  µs, 20:  µs, 60:  µs = LINEAR,
+needs manual calculation.  per byte. Happens regardless of pps. Speeds look like the SPI bus has a bit rate of 192000.
+
+10-11: HIRQ-4 takes 179 µs, always.
+
+11-39: 59 µs, regardless of packet size or pps.
+# Cooja seems to believe that event 89 occurs twice between 39 and 40.
+39-40: UDP payloads 0: 2209 µs, 80: 2547 µs, 40: 2392 µs, 20: 2315 µs, 60: 2470 µs = LINEAR,
+needs manual calculation. Happens regardless of pps. Is 100% due to two calls to memcpy which copy the UDP payload.
+UDP payload 80 results in total of 446 µs for the calls to the functions that call memcpy, UDP payload 0 results in total of 106 µs,
+UDP payload 1 results in total of 140 µs. 446 - 106 = 340. 2547 - 2209 = 2547 - 2209 = 338.
+Basic formula is: 2209 microseconds + ((2547-2209)/80) microseconds per byte in UDP payload.
+40-41: UDP payloads 0: 530 µs, 80: 530 µs, regardless of pps.
+41-38: UDP payloads 0: 226 µs, 80: 226 µs, regardless of pps.
+38-39: UDP payloads 0: 54 µs, 80: 54 µs, sometimes takes 441 µs during high pps.
+39-91: UDP payloads 0: 56 µs, 80: 56 µs, 4/136 takes 507 µs during high pps.
+91-21: UDP payloads 0: 262 µs, 80: 262 µs, also during high pps.
+21-38: UDP payloads 0: 429 µs, 80: 429 µs, often takes 366 µs during high pps-
+38-23: UDP payloads 0: 1448 µs, 80: 4948 µs, 40: 3283 µs, 20: 2321 µs, 60: 4071 µs = LINEAR,
+needs manual calculation. 1448 + 44. Happens regardless of pps. Speeds look like the SPI bus has a bit rate of 192000.
+
+In 9-10 and 38-23, the microcontroller either writes or reads the packet into memory, and that takes the same amount of time per byte.
+When reading the packet into memory, between HIRQ-1 and HIRQ-2, there is 1 (1 byte) read done from the RXFIFO through SPI. Between HIRQ-2 and
+HIRQ-3, there are four reads done (1 byte, 2 byte, 2 byte, 1 byte), so 7 bytes are always read before the payload.
+Between HIRQ-3 and HIRQ-4, there is round_up((amount of bytes in packet - 7 bytes)/2).
+
+23-89: UDP payloads 0: 113 µs, 80: 114 µs
+89-89: UDP payloads 0: 1258 µs, 80: 3926 µs, 40: 2602 µs, 20: 1932 µs, 60: 3258 µs = LINEAR according to CC2420 250kbps
+89-39:
+39-41:
+41-38:
+38-39:
+39-38:

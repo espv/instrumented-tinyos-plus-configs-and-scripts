@@ -1,0 +1,73 @@
+Not including delimiter 2
+File: p0µs_0UDP.txt
+Number forwarded: 298 first_time: 51808866 - last_time: 55048880
+Forwarded on avg every 10872
+Number received: 301 - on avg every 10764 
+
+Not including delimiter 2
+File: p10000µs_0UDP.txt
+Number forwarded: 299 first_time: 10178264 - last_time: 14739581
+Forwarded on avg every 15255
+Number received: 300 - on avg every 15204 
+
+Not including delimiter 2
+File: p5000µs_0UDP.txt
+Number forwarded: 298 first_time: 9660595 - last_time: 12901950
+Forwarded on avg every 10877
+Number received: 301 - on avg every 10768 
+
+Not including delimiter 2
+File: p5500µs_0UDP.txt
+Number forwarded: 173 first_time: 15041566 - last_time: 17390925
+Forwarded on avg every 13580
+Number received: 426 - on avg every 5514 
+
+Not including delimiter 2
+File: p6000µs_0UDP.txt
+Number forwarded: 284 first_time: 50754991 - last_time: 53773875
+Forwarded on avg every 10629
+Number received: 315 - on avg every 9583 
+
+Not including delimiter 2
+File: p6500µs_0UDP.txt
+Number forwarded: 297 first_time: 42488828 - last_time: 45129788
+Forwarded on avg every 8892
+Number received: 302 - on avg every 8744 
+
+Not including delimiter 2
+File: p7000µs_0UDP.txt
+Number forwarded: 299 first_time: 9067285 - last_time: 11609910
+Forwarded on avg every 8503
+Number received: 300 - on avg every 8475 
+
+Not including delimiter 2
+File: p7500µs_0UDP_R.txt
+Number forwarded: 63 first_time: 9809575 - last_time: 12575623
+Forwarded on avg every 43905
+Number received: 536 - on avg every 5160 
+
+Not including delimiter 2
+File: p8000µs_0UDP.txt
+Number forwarded: 81 first_time: 9839444 - last_time: 12137711
+Forwarded on avg every 28373
+Number received: 518 - on avg every 4436 
+
+Not including delimiter 2
+File: p8500µs_0UDP.txt
+Number forwarded: 298 first_time: 11827163 - last_time: 17241025
+Forwarded on avg every 18167
+Number received: 301 - on avg every 17986 
+
+Not including delimiter 2
+File: p9000µs_0UDP.txt
+Number forwarded: 297 first_time: 48371380 - last_time: 53839820
+Forwarded on avg every 18412
+Number received: 302 - on avg every 18107 
+
+Not including delimiter 2
+File: p9500µs_0UDP.txt
+Number forwarded: 298 first_time: 8601857 - last_time: 14494694
+Forwarded on avg every 19774
+Number received: 301 - on avg every 19577 
+
+

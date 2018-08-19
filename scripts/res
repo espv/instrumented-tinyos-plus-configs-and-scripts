@@ -1,0 +1,713 @@
+del1: 0
+del2: 91
+Including delimiter 2
+File: static-traces.txt
+Occurrences: 2 sequence: 0, 91
+All unique times and number of occurrences: [(12769, 1), (799, 1)]
+Max: 12769 , min: 799
+Avg: 6784.0 , median: 12769 
+
+Occurrences: 212 sequence: 0, 49, 91
+All unique times and number of occurrences: [(15632, 23), (15636, 15), (15630, 14), (15633, 14), (15634, 14), (15631, 13), (15635, 12), (16703, 11), (15626, 7), (15629, 6), (15638, 5), (15628, 4), (15637, 4), (15640, 3), (15650, 3), (15655, 3), (16704, 3), (15623, 2), (15639, 2), (15642, 2), (16794, 2), (15651, 2), (15405, 2), (16845, 2), (16753, 2), (16851, 2), (16754, 2), (16787, 2), (16759, 2), (16764, 2), (15622, 1), (15624, 1), (15625, 1), (15641, 1), (15514, 1), (16800, 1), (16801, 1), (15654, 1), (15658, 1), (16925, 1), (16840, 1), (15768, 1), (16709, 1), (16710, 1), (15687, 1), (16712, 1), (15697, 1), (16596, 1), (16853, 1), (16854, 1), (16857, 1), (16861, 1), (16869, 1), (15760, 1), (16101, 1), (16721, 1), (16752, 1), (16625, 1), (16756, 1), (16852, 1), (16762, 1), (16766, 1)]
+Max: 16925 , min: 15405
+Avg: 15901.1745283 , median: 15635 
+
+Occurrences: 1 sequence: 0, 49, 1, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 2, 91
+All unique times and number of occurrences: [(16878, 1)]
+Max: 16878 , min: 16878
+Avg: 16878.0 , median: 16878 
+
+Occurrences: 1 sequence: 0, 49, 3, 91
+All unique times and number of occurrences: [(16824, 1)]
+Max: 16824 , min: 16824
+Avg: 16824.0 , median: 16824 
+
+Occurrences: 1 sequence: 0, 49, 4, 91
+All unique times and number of occurrences: [(16831, 1)]
+Max: 16831 , min: 16831
+Avg: 16831.0 , median: 16831 
+
+Occurrences: 1 sequence: 0, 49, 5, 91
+All unique times and number of occurrences: [(16822, 1)]
+Max: 16822 , min: 16822
+Avg: 16822.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 6, 91
+All unique times and number of occurrences: [(16822, 1)]
+Max: 16822 , min: 16822
+Avg: 16822.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 7, 91
+All unique times and number of occurrences: [(16867, 1)]
+Max: 16867 , min: 16867
+Avg: 16867.0 , median: 16867 
+
+Occurrences: 1 sequence: 0, 49, 8, 91
+All unique times and number of occurrences: [(30442, 1)]
+Max: 30442 , min: 30442
+Avg: 30442.0 , median: 30442 
+
+Occurrences: 1 sequence: 0, 49, 9, 91
+All unique times and number of occurrences: [(22569, 1)]
+Max: 22569 , min: 22569
+Avg: 22569.0 , median: 22569 
+
+Occurrences: 1 sequence: 0, 49, 10, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 11, 91
+All unique times and number of occurrences: [(16823, 1)]
+Max: 16823 , min: 16823
+Avg: 16823.0 , median: 16823 
+
+Occurrences: 1 sequence: 0, 49, 12, 91
+All unique times and number of occurrences: [(16863, 1)]
+Max: 16863 , min: 16863
+Avg: 16863.0 , median: 16863 
+
+Occurrences: 1 sequence: 0, 49, 13, 91
+All unique times and number of occurrences: [(16883, 1)]
+Max: 16883 , min: 16883
+Avg: 16883.0 , median: 16883 
+
+Occurrences: 1 sequence: 0, 49, 14, 91
+All unique times and number of occurrences: [(16800, 1)]
+Max: 16800 , min: 16800
+Avg: 16800.0 , median: 16800 
+
+Occurrences: 1 sequence: 0, 49, 15, 91
+All unique times and number of occurrences: [(16865, 1)]
+Max: 16865 , min: 16865
+Avg: 16865.0 , median: 16865 
+
+Occurrences: 1 sequence: 0, 49, 16, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 17, 91
+All unique times and number of occurrences: [(16821, 1)]
+Max: 16821 , min: 16821
+Avg: 16821.0 , median: 16821 
+
+Occurrences: 1 sequence: 0, 49, 18, 91
+All unique times and number of occurrences: [(16883, 1)]
+Max: 16883 , min: 16883
+Avg: 16883.0 , median: 16883 
+
+Occurrences: 1 sequence: 0, 49, 19, 91
+All unique times and number of occurrences: [(16821, 1)]
+Max: 16821 , min: 16821
+Avg: 16821.0 , median: 16821 
+
+Occurrences: 1 sequence: 0, 49, 21, 91
+All unique times and number of occurrences: [(16826, 1)]
+Max: 16826 , min: 16826
+Avg: 16826.0 , median: 16826 
+
+Occurrences: 1 sequence: 0, 49, 22, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 24, 91
+All unique times and number of occurrences: [(17016, 1)]
+Max: 17016 , min: 17016
+Avg: 17016.0 , median: 17016 
+
+Occurrences: 1 sequence: 0, 49, 26, 91
+All unique times and number of occurrences: [(16822, 1)]
+Max: 16822 , min: 16822
+Avg: 16822.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 27, 91
+All unique times and number of occurrences: [(16822, 1)]
+Max: 16822 , min: 16822
+Avg: 16822.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 28, 91
+All unique times and number of occurrences: [(16863, 1)]
+Max: 16863 , min: 16863
+Avg: 16863.0 , median: 16863 
+
+Occurrences: 1 sequence: 0, 49, 29, 91
+All unique times and number of occurrences: [(16822, 1)]
+Max: 16822 , min: 16822
+Avg: 16822.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 30, 91
+All unique times and number of occurrences: [(16822, 1)]
+Max: 16822 , min: 16822
+Avg: 16822.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 31, 91
+All unique times and number of occurrences: [(16841, 1)]
+Max: 16841 , min: 16841
+Avg: 16841.0 , median: 16841 
+
+Occurrences: 1 sequence: 0, 49, 32, 91
+All unique times and number of occurrences: [(16804, 1)]
+Max: 16804 , min: 16804
+Avg: 16804.0 , median: 16804 
+
+Occurrences: 1 sequence: 0, 49, 33, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 34, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 35, 91
+All unique times and number of occurrences: [(16822, 1)]
+Max: 16822 , min: 16822
+Avg: 16822.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 36, 91
+All unique times and number of occurrences: [(16862, 1)]
+Max: 16862 , min: 16862
+Avg: 16862.0 , median: 16862 
+
+Occurrences: 1 sequence: 0, 49, 37, 91
+All unique times and number of occurrences: [(16883, 1)]
+Max: 16883 , min: 16883
+Avg: 16883.0 , median: 16883 
+
+Occurrences: 1 sequence: 0, 49, 38, 91
+All unique times and number of occurrences: [(16882, 1)]
+Max: 16882 , min: 16882
+Avg: 16882.0 , median: 16882 
+
+Occurrences: 1 sequence: 0, 49, 41, 91
+All unique times and number of occurrences: [(16803, 1)]
+Max: 16803 , min: 16803
+Avg: 16803.0 , median: 16803 
+
+Occurrences: 1 sequence: 0, 49, 43, 91
+All unique times and number of occurrences: [(16880, 1)]
+Max: 16880 , min: 16880
+Avg: 16880.0 , median: 16880 
+
+Occurrences: 1 sequence: 0, 49, 45, 91
+All unique times and number of occurrences: [(16877, 1)]
+Max: 16877 , min: 16877
+Avg: 16877.0 , median: 16877 
+
+Occurrences: 1 sequence: 0, 49, 48, 91
+All unique times and number of occurrences: [(16822, 1)]
+Max: 16822 , min: 16822
+Avg: 16822.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 50, 91
+All unique times and number of occurrences: [(16915, 1)]
+Max: 16915 , min: 16915
+Avg: 16915.0 , median: 16915 
+
+Occurrences: 1 sequence: 0, 49, 51, 91
+All unique times and number of occurrences: [(16821, 1)]
+Max: 16821 , min: 16821
+Avg: 16821.0 , median: 16821 
+
+Occurrences: 1 sequence: 0, 49, 52, 91
+All unique times and number of occurrences: [(16862, 1)]
+Max: 16862 , min: 16862
+Avg: 16862.0 , median: 16862 
+
+Occurrences: 1 sequence: 0, 49, 53, 91
+All unique times and number of occurrences: [(16821, 1)]
+Max: 16821 , min: 16821
+Avg: 16821.0 , median: 16821 
+
+Occurrences: 1 sequence: 0, 49, 54, 91
+All unique times and number of occurrences: [(16839, 1)]
+Max: 16839 , min: 16839
+Avg: 16839.0 , median: 16839 
+
+Occurrences: 1 sequence: 0, 49, 55, 91
+All unique times and number of occurrences: [(16871, 1)]
+Max: 16871 , min: 16871
+Avg: 16871.0 , median: 16871 
+
+Occurrences: 1 sequence: 0, 49, 56, 91
+All unique times and number of occurrences: [(16877, 1)]
+Max: 16877 , min: 16877
+Avg: 16877.0 , median: 16877 
+
+Occurrences: 1 sequence: 0, 49, 57, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 58, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 59, 91
+All unique times and number of occurrences: [(16883, 1)]
+Max: 16883 , min: 16883
+Avg: 16883.0 , median: 16883 
+
+Occurrences: 1 sequence: 0, 49, 62, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 66, 91
+All unique times and number of occurrences: [(16870, 1)]
+Max: 16870 , min: 16870
+Avg: 16870.0 , median: 16870 
+
+Occurrences: 1 sequence: 0, 49, 67, 91
+All unique times and number of occurrences: [(16881, 1)]
+Max: 16881 , min: 16881
+Avg: 16881.0 , median: 16881 
+
+Occurrences: 1 sequence: 0, 49, 69, 91
+All unique times and number of occurrences: [(16875, 1)]
+Max: 16875 , min: 16875
+Avg: 16875.0 , median: 16875 
+
+Occurrences: 1 sequence: 0, 49, 70, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 72, 91
+All unique times and number of occurrences: [(16802, 1)]
+Max: 16802 , min: 16802
+Avg: 16802.0 , median: 16802 
+
+Occurrences: 1 sequence: 0, 49, 73, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 74, 91
+All unique times and number of occurrences: [(16822, 1)]
+Max: 16822 , min: 16822
+Avg: 16822.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 75, 91
+All unique times and number of occurrences: [(30464, 1)]
+Max: 30464 , min: 30464
+Avg: 30464.0 , median: 30464 
+
+Occurrences: 1 sequence: 0, 49, 76, 91
+All unique times and number of occurrences: [(22820, 1)]
+Max: 22820 , min: 22820
+Avg: 22820.0 , median: 22820 
+
+Occurrences: 1 sequence: 0, 49, 78, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 80, 91
+All unique times and number of occurrences: [(16805, 1)]
+Max: 16805 , min: 16805
+Avg: 16805.0 , median: 16805 
+
+Occurrences: 1 sequence: 0, 49, 82, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 83, 91
+All unique times and number of occurrences: [(30488, 1)]
+Max: 30488 , min: 30488
+Avg: 30488.0 , median: 30488 
+
+Occurrences: 1 sequence: 0, 49, 84, 91
+All unique times and number of occurrences: [(36188, 1)]
+Max: 36188 , min: 36188
+Avg: 36188.0 , median: 36188 
+
+Occurrences: 1 sequence: 0, 49, 85, 91
+All unique times and number of occurrences: [(22563, 1)]
+Max: 22563 , min: 22563
+Avg: 22563.0 , median: 22563 
+
+Occurrences: 1 sequence: 0, 49, 86, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 87, 91
+All unique times and number of occurrences: [(16872, 1)]
+Max: 16872 , min: 16872
+Avg: 16872.0 , median: 16872 
+
+Occurrences: 1 sequence: 0, 49, 88, 91
+All unique times and number of occurrences: [(16805, 1)]
+Max: 16805 , min: 16805
+Avg: 16805.0 , median: 16805 
+
+Occurrences: 1 sequence: 0, 49, 90, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 94, 91
+All unique times and number of occurrences: [(16835, 1)]
+Max: 16835 , min: 16835
+Avg: 16835.0 , median: 16835 
+
+Occurrences: 2 sequence: 0, 49, 96, 91
+All unique times and number of occurrences: [(15626, 1), (16822, 1)]
+Max: 16822 , min: 15626
+Avg: 16224.0 , median: 16822 
+
+Occurrences: 1 sequence: 0, 49, 97, 91
+All unique times and number of occurrences: [(16835, 1)]
+Max: 16835 , min: 16835
+Avg: 16835.0 , median: 16835 
+
+Occurrences: 1 sequence: 0, 49, 98, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 99, 91
+All unique times and number of occurrences: [(16871, 1)]
+Max: 16871 , min: 16871
+Avg: 16871.0 , median: 16871 
+
+Occurrences: 1 sequence: 0, 49, 100, 91
+All unique times and number of occurrences: [(16834, 1)]
+Max: 16834 , min: 16834
+Avg: 16834.0 , median: 16834 
+
+Occurrences: 1 sequence: 0, 49, 101, 91
+All unique times and number of occurrences: [(16798, 1)]
+Max: 16798 , min: 16798
+Avg: 16798.0 , median: 16798 
+
+Occurrences: 1 sequence: 0, 49, 102, 91
+All unique times and number of occurrences: [(30515, 1)]
+Max: 30515 , min: 30515
+Avg: 30515.0 , median: 30515 
+
+Occurrences: 1 sequence: 0, 49, 103, 91
+All unique times and number of occurrences: [(22568, 1)]
+Max: 22568 , min: 22568
+Avg: 22568.0 , median: 22568 
+
+Occurrences: 1 sequence: 0, 49, 104, 91
+All unique times and number of occurrences: [(30432, 1)]
+Max: 30432 , min: 30432
+Avg: 30432.0 , median: 30432 
+
+Occurrences: 1 sequence: 0, 49, 105, 91
+All unique times and number of occurrences: [(36172, 1)]
+Max: 36172 , min: 36172
+Avg: 36172.0 , median: 36172 
+
+Occurrences: 1 sequence: 0, 49, 106, 91
+All unique times and number of occurrences: [(36203, 1)]
+Max: 36203 , min: 36203
+Avg: 36203.0 , median: 36203 
+
+Occurrences: 1 sequence: 0, 49, 107, 91
+All unique times and number of occurrences: [(36195, 1)]
+Max: 36195 , min: 36195
+Avg: 36195.0 , median: 36195 
+
+Occurrences: 1 sequence: 0, 49, 108, 91
+All unique times and number of occurrences: [(36216, 1)]
+Max: 36216 , min: 36216
+Avg: 36216.0 , median: 36216 
+
+Occurrences: 1 sequence: 0, 49, 109, 91
+All unique times and number of occurrences: [(36206, 1)]
+Max: 36206 , min: 36206
+Avg: 36206.0 , median: 36206 
+
+Occurrences: 1 sequence: 0, 49, 110, 91
+All unique times and number of occurrences: [(36193, 1)]
+Max: 36193 , min: 36193
+Avg: 36193.0 , median: 36193 
+
+Occurrences: 1 sequence: 0, 49, 111, 91
+All unique times and number of occurrences: [(36219, 1)]
+Max: 36219 , min: 36219
+Avg: 36219.0 , median: 36219 
+
+Occurrences: 1 sequence: 0, 49, 112, 91
+All unique times and number of occurrences: [(36196, 1)]
+Max: 36196 , min: 36196
+Avg: 36196.0 , median: 36196 
+
+Occurrences: 1 sequence: 0, 49, 113, 91
+All unique times and number of occurrences: [(36191, 1)]
+Max: 36191 , min: 36191
+Avg: 36191.0 , median: 36191 
+
+Occurrences: 1 sequence: 0, 49, 114, 91
+All unique times and number of occurrences: [(36202, 1)]
+Max: 36202 , min: 36202
+Avg: 36202.0 , median: 36202 
+
+Occurrences: 1 sequence: 0, 49, 115, 91
+All unique times and number of occurrences: [(36195, 1)]
+Max: 36195 , min: 36195
+Avg: 36195.0 , median: 36195 
+
+Occurrences: 1 sequence: 0, 49, 116, 91
+All unique times and number of occurrences: [(36201, 1)]
+Max: 36201 , min: 36201
+Avg: 36201.0 , median: 36201 
+
+Occurrences: 1 sequence: 0, 49, 117, 91
+All unique times and number of occurrences: [(36215, 1)]
+Max: 36215 , min: 36215
+Avg: 36215.0 , median: 36215 
+
+Occurrences: 1 sequence: 0, 49, 118, 91
+All unique times and number of occurrences: [(36167, 1)]
+Max: 36167 , min: 36167
+Avg: 36167.0 , median: 36167 
+
+Occurrences: 1 sequence: 0, 49, 119, 91
+All unique times and number of occurrences: [(36203, 1)]
+Max: 36203 , min: 36203
+Avg: 36203.0 , median: 36203 
+
+Occurrences: 1 sequence: 0, 49, 120, 91
+All unique times and number of occurrences: [(36196, 1)]
+Max: 36196 , min: 36196
+Avg: 36196.0 , median: 36196 
+
+Occurrences: 1 sequence: 0, 49, 121, 91
+All unique times and number of occurrences: [(36209, 1)]
+Max: 36209 , min: 36209
+Avg: 36209.0 , median: 36209 
+
+Occurrences: 1 sequence: 0, 49, 122, 91
+All unique times and number of occurrences: [(36205, 1)]
+Max: 36205 , min: 36205
+Avg: 36205.0 , median: 36205 
+
+Occurrences: 1 sequence: 0, 49, 123, 91
+All unique times and number of occurrences: [(36192, 1)]
+Max: 36192 , min: 36192
+Avg: 36192.0 , median: 36192 
+
+Occurrences: 1 sequence: 0, 49, 124, 91
+All unique times and number of occurrences: [(36211, 1)]
+Max: 36211 , min: 36211
+Avg: 36211.0 , median: 36211 
+
+Occurrences: 1 sequence: 0, 49, 125, 91
+All unique times and number of occurrences: [(36191, 1)]
+Max: 36191 , min: 36191
+Avg: 36191.0 , median: 36191 
+
+Occurrences: 1 sequence: 0, 49, 126, 91
+All unique times and number of occurrences: [(36190, 1)]
+Max: 36190 , min: 36190
+Avg: 36190.0 , median: 36190 
+
+Occurrences: 1 sequence: 0, 49, 127, 91
+All unique times and number of occurrences: [(22147, 1)]
+Max: 22147 , min: 22147
+Avg: 22147.0 , median: 22147 
+
+Occurrences: 1 sequence: 0, 49, 128, 91
+All unique times and number of occurrences: [(16874, 1)]
+Max: 16874 , min: 16874
+Avg: 16874.0 , median: 16874 
+
+Occurrences: 1 sequence: 0, 49, 130, 91
+All unique times and number of occurrences: [(16805, 1)]
+Max: 16805 , min: 16805
+Avg: 16805.0 , median: 16805 
+
+Occurrences: 1 sequence: 0, 49, 131, 91
+All unique times and number of occurrences: [(16827, 1)]
+Max: 16827 , min: 16827
+Avg: 16827.0 , median: 16827 
+
+Occurrences: 1 sequence: 0, 49, 132, 91
+All unique times and number of occurrences: [(16886, 1)]
+Max: 16886 , min: 16886
+Avg: 16886.0 , median: 16886 
+
+Occurrences: 1 sequence: 0, 49, 135, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 136, 91
+All unique times and number of occurrences: [(1044531, 1)]
+Max: 1044531 , min: 1044531
+Avg: 1044531.0 , median: 1044531 
+
+Occurrences: 1 sequence: 0, 49, 137, 91
+All unique times and number of occurrences: [(31052, 1)]
+Max: 31052 , min: 31052
+Avg: 31052.0 , median: 31052 
+
+Occurrences: 1 sequence: 0, 49, 138, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 139, 91
+All unique times and number of occurrences: [(16828, 1)]
+Max: 16828 , min: 16828
+Avg: 16828.0 , median: 16828 
+
+Occurrences: 1 sequence: 0, 49, 142, 91
+All unique times and number of occurrences: [(16863, 1)]
+Max: 16863 , min: 16863
+Avg: 16863.0 , median: 16863 
+
+Occurrences: 1 sequence: 0, 49, 143, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 144, 91
+All unique times and number of occurrences: [(16823, 1)]
+Max: 16823 , min: 16823
+Avg: 16823.0 , median: 16823 
+
+Occurrences: 1 sequence: 0, 49, 146, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 150, 91
+All unique times and number of occurrences: [(16795, 1)]
+Max: 16795 , min: 16795
+Avg: 16795.0 , median: 16795 
+
+Occurrences: 1 sequence: 0, 49, 153, 91
+All unique times and number of occurrences: [(17096, 1)]
+Max: 17096 , min: 17096
+Avg: 17096.0 , median: 17096 
+
+Occurrences: 1 sequence: 0, 49, 155, 91
+All unique times and number of occurrences: [(16828, 1)]
+Max: 16828 , min: 16828
+Avg: 16828.0 , median: 16828 
+
+Occurrences: 1 sequence: 0, 49, 156, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 157, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 158, 91
+All unique times and number of occurrences: [(16869, 1)]
+Max: 16869 , min: 16869
+Avg: 16869.0 , median: 16869 
+
+Occurrences: 1 sequence: 0, 49, 159, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 161, 91
+All unique times and number of occurrences: [(16855, 1)]
+Max: 16855 , min: 16855
+Avg: 16855.0 , median: 16855 
+
+Occurrences: 1 sequence: 0, 49, 163, 91
+All unique times and number of occurrences: [(16835, 1)]
+Max: 16835 , min: 16835
+Avg: 16835.0 , median: 16835 
+
+Occurrences: 1 sequence: 0, 49, 164, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 165, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 167, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 170, 91
+All unique times and number of occurrences: [(16863, 1)]
+Max: 16863 , min: 16863
+Avg: 16863.0 , median: 16863 
+
+Occurrences: 1 sequence: 0, 49, 174, 91
+All unique times and number of occurrences: [(16853, 1)]
+Max: 16853 , min: 16853
+Avg: 16853.0 , median: 16853 
+
+Occurrences: 1 sequence: 0, 49, 175, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 177, 91
+All unique times and number of occurrences: [(16886, 1)]
+Max: 16886 , min: 16886
+Avg: 16886.0 , median: 16886 
+
+Occurrences: 1 sequence: 0, 49, 178, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 179, 91
+All unique times and number of occurrences: [(16931, 1)]
+Max: 16931 , min: 16931
+Avg: 16931.0 , median: 16931 
+
+Occurrences: 1 sequence: 0, 49, 183, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 184, 91
+All unique times and number of occurrences: [(16826, 1)]
+Max: 16826 , min: 16826
+Avg: 16826.0 , median: 16826 
+
+Occurrences: 1 sequence: 0, 49, 186, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 187, 91
+All unique times and number of occurrences: [(16805, 1)]
+Max: 16805 , min: 16805
+Avg: 16805.0 , median: 16805 
+
+Occurrences: 1 sequence: 0, 49, 189, 91
+All unique times and number of occurrences: [(16868, 1)]
+Max: 16868 , min: 16868
+Avg: 16868.0 , median: 16868 
+
+Occurrences: 1 sequence: 0, 49, 190, 91
+All unique times and number of occurrences: [(16841, 1)]
+Max: 16841 , min: 16841
+Avg: 16841.0 , median: 16841 
+
+Number forwarded: 1 first_time: 21359097 - last_time: 30242865
+Forwarded on avg every 8883768
+Number received: 389 - on avg every 22837 
+
