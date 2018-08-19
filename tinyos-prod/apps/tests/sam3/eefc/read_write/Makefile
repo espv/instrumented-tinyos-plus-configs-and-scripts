@@ -1,3 +1,0 @@
-COMPONENT=MoteAppC
-#BOOTLOADER=tosboot
-include $(MAKERULES)

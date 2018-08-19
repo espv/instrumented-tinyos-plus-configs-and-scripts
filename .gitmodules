@@ -1,3 +1,0 @@
-[submodule "prod"]
-	path = prod
-	url = git@github.com:espv/prod.git

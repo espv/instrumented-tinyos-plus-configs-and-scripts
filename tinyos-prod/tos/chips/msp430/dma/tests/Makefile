@@ -1,2 +1,0 @@
-COMPONENT=DmaC
-include $(MAKERULES)

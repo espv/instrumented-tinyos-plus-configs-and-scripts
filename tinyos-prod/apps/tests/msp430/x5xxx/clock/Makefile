@@ -1,3 +1,0 @@
-COMPONENT=ClockC
-include $(MAKERULES)
-
