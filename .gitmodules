@@ -1,0 +1,3 @@
+[submodule "tinyos-main"]
+	path = tinyos-main
+	url = git@github.com:espv/tinyos-main.git

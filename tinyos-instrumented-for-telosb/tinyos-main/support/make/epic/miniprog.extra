@@ -1,4 +1,0 @@
-#-*-Makefile-*-
-
-# Special flags for Epic USB Mini Programmer
-MSP_BSL_FLAGS = --swap-reset-test --invert-reset --invert-test

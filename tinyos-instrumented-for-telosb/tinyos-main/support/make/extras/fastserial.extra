@@ -1,1 +1,0 @@
-PFLAGS += -I$(TINYOS_OS_DIR)/lib/fastserial

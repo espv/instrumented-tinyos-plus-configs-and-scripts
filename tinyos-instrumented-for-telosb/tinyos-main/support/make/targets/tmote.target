@@ -1,6 +1,0 @@
-#-*-Makefile-*- vim:syntax=make
-
-$(call TOSMake_include_target,telosb)
-
-tmote: $(BUILD_DEPS)
-	@:

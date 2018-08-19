@@ -1,4 +1,0 @@
-#-*-Makefile-*- vim:syntax=make
-
-PFLAGS += -I%T/sensorboards/mts400
-PFLAGS += -I%T/chips/sht11
