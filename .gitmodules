@@ -1,6 +1,7 @@
 [submodule "tinyos-main"]
 	path = tinyos-main
 	url = git@github.com:espv/tinyos-main.git
+	branch = master
 [submodule "contiki"]
 	path = contiki
 	url = git@github.com:espv/contiki.git
